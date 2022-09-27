@@ -1,11 +1,9 @@
-import logo from './logo.svg';
-import './App.css';
-import CalendarBoard from './Components/CalendarBoard/CalendarBoard';
+import logo from "./logo.svg";
+import "./App.css";
+import CalendarBoard from "./Components/CalendarBoard/CalendarBoard";
 
 function App() {
-  return (
-    <CalendarBoard />
-  );
+  return <CalendarBoard />;
 }
 
 export default App;
