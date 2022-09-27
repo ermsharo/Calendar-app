@@ -1,14 +1,17 @@
 import React, { useState } from "react";
 import Backdrop from '@mui/material/Backdrop';
-import CircularProgress from '@mui/material/CircularProgress';
 import Button from '@mui/material/Button';
 import styled from "styled-components";
 import TextField from "@mui/material/TextField";
-import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DesktopTimePicker } from '@mui/x-date-pickers/DesktopTimePicker';
 import dayjs from 'dayjs';
+import { cityInfo } from "../../Services/cityInfo";
+import MenuItem from '@mui/material/MenuItem';
+import { tagColors } from "../../Services/tagColorOptions";
+
+
 const Board = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
@@ -37,6 +40,14 @@ input{
 
 `;
 
+const ColorDisplay = styled.div`
+ width: 32px;
+ border-radius: 50%;
+ margin: auto;
+ height: 32px;
+
+`
+
 const DayInfo = styled.div`
 
   font-size: 24px;
@@ -51,8 +62,8 @@ const HourPickerBox = styled.div`
 `;
 
 
+export default function DayModal({year, month, day}) {
 
-export default function DayModal() {
 
     const [startMoment, setStartMoment] = useState(dayjs('2020-01-01 12:00'));
     const [endMoment, setEndMoment] = useState(dayjs('2020-01-01 12:00'));
@@ -61,7 +72,9 @@ export default function DayModal() {
     const [formInputs, setFormInputs] = useState({
         reminderTitle: "",
         reminderDescription: "",
+        colorOfReminder: tagColors[0]
     });
+
 
 
     function handleChange(evt) {
@@ -73,9 +86,6 @@ export default function DayModal() {
 
     }
 
-    const handleClose = () => {
-        setOpen(false);
-    };
     const handleToggle = () => {
         setOpen(!open);
     };
@@ -99,19 +109,9 @@ export default function DayModal() {
                         name="reminderTitle"
                         value={formInputs.reminderTitle}
                         onChange={handleChange}
+                        inputProps={{ maxLength: 30 }}
                     />
-                    <TextField
-                        type="text"
-                        fullWidth
-                        label="Descrição"
-                        name="reminderDescription"
-                        value={formInputs.reminderDescription}
-                        onChange={handleChange}
-                        id="outlined-multiline-flexible"
-                        multiline
-                        rows={4}
-                        maxRows={4}
-                    />
+
 
 
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -135,9 +135,51 @@ export default function DayModal() {
                                 }}
                                 renderInput={(params) => <TextField {...params} />}
                             />
+                            {/* <TextField
+                                id="outlined-select-currency"
+                                select
+                                label="Cidade"
+                                name="city"
+                                value={formInputs.city}
+                                onChange={handleChange}
+                                helperText="Please select your currency"
+                            >
+                                {cityInfo.map((option) => (
+                                    <MenuItem key={option.nome} value={option.nome}>
+                                       aaa
+                                    </MenuItem>
+                                ))}
+                            </TextField> */}
+
+                            <TextField
+                                id="outlined-select-currency"
+                                select
+                                label="Cor"
+                                name="colorOfReminder"
+                                value={formInputs.colorOfReminder}
+                                onChange={handleChange}
+
+                            >
+                                {tagColors.map((item) => (
+                                    <MenuItem key={item} value={item}>
+                                        <ColorDisplay style={{ backgroundColor: item }}></ColorDisplay>
+                                    </MenuItem>
+                                ))}
+                            </TextField>
 
                         </HourPickerBox>
-
+                        <TextField
+                            type="text"
+                            fullWidth
+                            label="Descrição"
+                            name="reminderDescription"
+                            value={formInputs.reminderDescription}
+                            onChange={handleChange}
+                            id="outlined-multiline-flexible"
+                            multiline
+                            rows={4}
+                            maxRows={4}
+                        />
                     </LocalizationProvider>
 
                 </DayModalBox></Board>

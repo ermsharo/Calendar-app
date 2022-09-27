@@ -212,37 +212,37 @@ function CalendarBoard() {
 
   return (
     <><BoardBox>
-    <ChangeMonthArrow>
-      {" "}
-      <AiFillLeftCircle
-        onClick={changeToPreviousMonth}
-      />
-    </ChangeMonthArrow>
-    <Board>
-      <MonthTitle>
-        {monthsOfYear[month - 1]} - {year}
-      </MonthTitle>
-      <DaysBox>
+      <ChangeMonthArrow>
         {" "}
-        {daysOfWeekArray.map((item, index) => (
-          <DaysOfWeek>{item}</DaysOfWeek>
-        ))}
-        {fillCallendarObj(month, year).map((item, index) =>
-          item.isValideDay ? <Day>{item.day}</Day> : <EmptyDay> </EmptyDay>
-        )}
-      </DaysBox>
-    </Board>
-    <ChangeMonthArrow>
-      {" "}
-      <AiFillRightCircle
-        onClick={changeToNextMonth}
-      />{" "}
-    </ChangeMonthArrow>
-  </BoardBox>
-  
-  <DayModal/>
-  </>
-    
+        <AiFillLeftCircle
+          onClick={changeToPreviousMonth}
+        />
+      </ChangeMonthArrow>
+      <Board>
+        <MonthTitle>
+          {monthsOfYear[month - 1]} - {year}
+        </MonthTitle>
+        <DaysBox>
+          {" "}
+          {daysOfWeekArray.map((item, index) => (
+            <DaysOfWeek>{item}</DaysOfWeek>
+          ))}
+          {fillCallendarObj(month, year).map((item, index) =>
+            item.isValideDay ? <Day>{item.day}</Day> : <EmptyDay> </EmptyDay>
+          )}
+        </DaysBox>
+      </Board>
+      <ChangeMonthArrow>
+        {" "}
+        <AiFillRightCircle
+          onClick={changeToNextMonth}
+        />{" "}
+      </ChangeMonthArrow>
+    </BoardBox>
+
+      <DayModal />
+    </>
+
   );
 }
 
