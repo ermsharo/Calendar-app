@@ -2,7 +2,7 @@ import styled from "styled-components";
 import React, { useState, useEffect } from "react";
 import DayModal from "../DayModal/DayModal";
 import { AiFillRightCircle, AiFillLeftCircle } from "react-icons/ai";
-
+import { GetCalendarInfo } from "../../Services/calendarInfo";
 const Board = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
@@ -48,6 +48,12 @@ const DaysOfWeek = styled.div`
   font-family: "Varela Round", sans-serif;
   font-size: calc((12vw - 4.5rem) / 7);
   font-weight: 500;
+`;
+
+const GenericButton = styled.div`
+  background-color: darkblue;
+  color: white;
+  padding: 16px;
 `;
 
 const Day = styled.div`
@@ -156,8 +162,6 @@ const fillCallendarObj = (year, month) => {
   return ourData;
 };
 
-
-
 let daysOfWeekArray = [
   "domingo",
   "segunda",
@@ -184,17 +188,25 @@ let monthsOfYear = [
 ];
 
 function CalendarBoard() {
-  const [month, setMonth] = useState(1);
-  const [year, setYear] = useState(2022);
+  const dt = new Date();
+  const actualDay = dt.getDate();
+  const actualMonth = dt.getMonth();
+  const actualYear = dt.getFullYear();
+
+  const [month, setMonth] = useState(actualMonth);
+  const [year, setYear] = useState(actualYear);
+  const [day, setDay] = useState(actualDay);
+
+  const [{ data, isLoading, isError }, changePage, setRefresh] =
+    GetCalendarInfo();
 
   const changeToNextMonth = () => {
     if (month < 12) {
       setMonth(month + 1);
     } else {
       setMonth(1);
-      setYear(year + 1)
+      setYear(year + 1);
     }
-
   };
 
   const changeToPreviousMonth = () => {
@@ -203,46 +215,64 @@ function CalendarBoard() {
       setMonth(12);
     } else {
       setMonth(month - 1);
-
     }
   };
 
+  useEffect(() => {}, [month, year]);
 
-  useEffect(() => { }, [month, year]);
+  if (month < 12) {
+    setMonth(month + 1);
+  } else {
+    setMonth(1);
+    setYear(year + 1);
+  }
+}
 
+const changeToPreviousMonth = () => {
+  if (month == 1) {
+    setYear(year - 1);
+    setMonth(12);
+  } else {
+    setMonth(month - 1);
+  }
+};
+
+if (isError) {
+  return <>error</>;
+}
+
+if (isLoading) {
+  return <>loading</>;
+}
+
+if (data) {
   return (
-    <><BoardBox>
-      <ChangeMonthArrow>
-        {" "}
-        <AiFillLeftCircle
-          onClick={changeToPreviousMonth}
-        />
-      </ChangeMonthArrow>
-      <Board>
-        <MonthTitle>
-          {monthsOfYear[month - 1]} - {year}
-        </MonthTitle>
-        <DaysBox>
+    <>
+      <BoardBox>
+        <ChangeMonthArrow>
           {" "}
-          {daysOfWeekArray.map((item, index) => (
-            <DaysOfWeek>{item}</DaysOfWeek>
-          ))}
-          {fillCallendarObj(month, year).map((item, index) =>
-            item.isValideDay ? <Day>{item.day}</Day> : <EmptyDay> </EmptyDay>
-          )}
-        </DaysBox>
-      </Board>
-      <ChangeMonthArrow>
-        {" "}
-        <AiFillRightCircle
-          onClick={changeToNextMonth}
-        />{" "}
-      </ChangeMonthArrow>
-    </BoardBox>
+          <AiFillLeftCircle onClick={changeToPreviousMonth} />
+        </ChangeMonthArrow>
+        <Board>
+          <MonthTitle>
+            {monthsOfYear[month - 1]} - {year}
+          </MonthTitle>
+          <DaysBox>
+            {daysOfWeekArray.map((item, index) => (
+              <DaysOfWeek>{item}</DaysOfWeek>
+            ))}
+            {fillCallendarObj(month, year).map((item, index) =>
+              item.isValideDay ? <Day>{item.day}</Day> : <EmptyDay> </EmptyDay>
+            )}
+          </DaysBox>
+        </Board>
+        <ChangeMonthArrow>
+          <AiFillRightCircle onClick={changeToNextMonth} />
+        </ChangeMonthArrow>
+      </BoardBox>
 
-      <DayModal />
+      <DayModal year={year} month={month} day={day} />
     </>
-
   );
 }
 

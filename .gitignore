@@ -1,0 +1,7 @@
+.trunk/trunk.yaml
+.trunk/.gitignore
+.trunk/config/svgo.config.js
+.trunk/config/.markdownlint.yaml
+my-app/package-lock.json
+my-app/package-lock.json
+.vscode/settings.json

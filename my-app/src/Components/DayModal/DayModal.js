@@ -24,6 +24,15 @@ const Board = styled.div`
   
 `;
 
+const SendButton = styled.div`
+ background-color: #77201B; 
+ color: white;
+  text-align: center; 
+  padding: 16px;
+  border-radius: 5px;
+`;
+
+
 
 const DayModalBox = styled.div`
 grid-column: 2/7;
@@ -62,11 +71,10 @@ const HourPickerBox = styled.div`
 `;
 
 
-export default function DayModal({year, month, day}) {
+export default function DayModal({ year, month, day }) {
 
-
-    const [startMoment, setStartMoment] = useState(dayjs('2020-01-01 12:00'));
-    const [endMoment, setEndMoment] = useState(dayjs('2020-01-01 12:00'));
+    const [startMoment, setStartMoment] = useState(dayjs(`${year}-${day}-${('0' + month).slice(-2)} 12:00`));
+    const [endMoment, setEndMoment] = useState(dayjs(`${year}-${day}-${('0' + month).slice(-2)} 12:30`));
     const [open, setOpen] = useState(true);
 
     const [formInputs, setFormInputs] = useState({
@@ -86,6 +94,16 @@ export default function DayModal({year, month, day}) {
 
     }
 
+    const getFormInfo = () =>{
+        return{
+            "reminder-title": formInputs.reminderTitle,
+            "reminder-description": formInputs.reminderDescription,
+            "reminder-color": formInputs.colorOfReminder,
+            "reminder-start": startMoment,
+            "reminder-end": endMoment,
+        }
+    }
+
     const handleToggle = () => {
         setOpen(!open);
     };
@@ -101,7 +119,7 @@ export default function DayModal({year, month, day}) {
 
                 <Board>     <DayModalBox>
 
-                    <DayInfo> Segunda 20/10/2020</DayInfo>
+                    <DayInfo>  {day}-{('0' + month).slice(-2)}-{year}</DayInfo>
                     <TextField
                         fullWidth
                         id="outlined-name"
@@ -181,7 +199,8 @@ export default function DayModal({year, month, day}) {
                             maxRows={4}
                         />
                     </LocalizationProvider>
-
+{JSON.stringify(getFormInfo())}
+<SendButton onClick = {()=>{}}>Criar lembrete</SendButton>
                 </DayModalBox></Board>
 
             </Backdrop>
