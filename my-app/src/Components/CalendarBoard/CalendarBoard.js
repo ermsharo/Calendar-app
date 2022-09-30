@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import DayModal from "../DayModal/DayModal";
 import { AiFillRightCircle, AiFillLeftCircle } from "react-icons/ai";
 import { GetCalendarInfo } from "../../Services/calendarInfo";
+import Day from "../Day/Day";
 const Board = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
@@ -50,35 +51,6 @@ const DaysOfWeek = styled.div`
   font-weight: 500;
 `;
 
-const GenericButton = styled.div`
-  background-color: darkblue;
-  color: white;
-  padding: 16px;
-`;
-
-const Day = styled.div`
-  text-align: center;
-  text-transform: capitalize;
-  aspect-ratio: 1 / 1;
-  padding: 12px;
-  font-family: "Asap Medium", sans-serif;
-  font-family: "Asap", sans-serif;
-
-  background-color: white;
-  border-radius: 8px;
-  font-weight: 600;
-`;
-
-const EmptyDay = styled.div`
-  text-align: center;
-  text-transform: capitalize;
-  aspect-ratio: 1 / 1;
-  padding: 4px;
-  background-color: white;
-  opacity: 0.5;
-  border-radius: 8px;
-`;
-
 const MonthTitle = styled.div`
   background-color: #ef4136;
   grid-column: 1/8;
@@ -95,7 +67,6 @@ const updateOurStates = (referenceMonth, referenceYear) => {
   const dt = new Date();
   const day = dt.getDate();
   console.log("Day", day);
-  const month = dt.getMonth();
   console.log("month", day);
   const year = dt.getFullYear();
   console.log("Year", year);
@@ -134,33 +105,6 @@ const updateOurStates = (referenceMonth, referenceYear) => {
   };
 };
 
-const fillCallendarObj = (year, month) => {
-  let monthInfo = updateOurStates(year, month);
-  console.log(monthInfo);
-  let numberOfDays = monthInfo.daysInMonth;
-  let firstDayIndex = monthInfo.paddingDays;
-  let j = 1;
-  const ourData = [];
-  for (let i = 0; i < 42; i++) {
-    if (i < firstDayIndex || i > numberOfDays + firstDayIndex) {
-      ourData.push({
-        isValideDay: false,
-      });
-    } else {
-      ourData.push({
-        isValideDay: true,
-        day: j,
-        month: 1,
-        year: 1,
-        date: null,
-        eventsOfDay: [],
-      });
-      j++;
-    }
-  }
-  return ourData;
-};
-
 let daysOfWeekArray = [
   "domingo",
   "segunda",
@@ -169,21 +113,6 @@ let daysOfWeekArray = [
   "quinta",
   "sexta",
   "sabado",
-];
-
-let monthsOfYear = [
-  "janeiro",
-  "fevereiro",
-  "março",
-  "abril",
-  "maio",
-  "junho",
-  "julho",
-  "agosto",
-  "setembro",
-  "outubro",
-  "novembro",
-  "dezembro",
 ];
 
 function CalendarBoard() {
@@ -224,11 +153,10 @@ function CalendarBoard() {
     setUrl(`http://localhost:5000/calendar/?month=${month}&year=${year}`);
   };
 
-  const openDay = (day) =>{
+  const openDay = (day) => {
     setDay(day);
-    setOpen(true)
-
-  }
+    setOpen(true);
+  };
 
   if (isError) {
     return <>error</>;
@@ -243,7 +171,6 @@ function CalendarBoard() {
       <>
         <BoardBox>
           <ChangeMonthArrow>
-            {" "}
             <AiFillLeftCircle onClick={changeToPreviousMonth} />
           </ChangeMonthArrow>
           <Board>
@@ -251,16 +178,12 @@ function CalendarBoard() {
               {data.month} - {data.year}
             </MonthTitle>
             <DaysBox>
-              {daysOfWeekArray.map((item, index) => (
+              {daysOfWeekArray.map((item) => (
                 <DaysOfWeek>{item}</DaysOfWeek>
               ))}
-              {data.days.map((item, index) =>
-                item.isValideDay ? (
-                  <Day onClick = {() => {openDay(item.day)}}>{item.day}</Day>
-                ) : (
-                  <EmptyDay> </EmptyDay>
-                )
-              )}
+              {data.days.map((item) => (
+                <Day item={item} openDay={openDay} />
+              ))}
             </DaysBox>
           </Board>
           <ChangeMonthArrow>

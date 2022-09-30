@@ -72,141 +72,141 @@ const HourPickerBox = styled.div`
 `;
 
 export default function DayModal({ year, month, day, open, setOpen }) {
-    const [startMoment, setStartMoment] = useState(
-        dayjs(`${year}-${day}-${("0" + month).slice(-2)} 12:00`)
-    );
-    const [endMoment, setEndMoment] = useState(
-        dayjs(`${year}-${day}-${("0" + month).slice(-2)} 12:30`)
-    );
+  const [startMoment, setStartMoment] = useState(
+    dayjs(`${year}-${day}-${("0" + month).slice(-2)} 12:00`)
+  );
+  const [endMoment, setEndMoment] = useState(
+    dayjs(`${year}-${day}-${("0" + month).slice(-2)} 12:30`)
+  );
 
-    const [formInputs, setFormInputs] = useState({
-        reminderTitle: "",
-        reminderDescription: "",
-        colorOfReminder: tagColors[0],
+  const [formInputs, setFormInputs] = useState({
+    reminderTitle: "",
+    reminderDescription: "",
+    colorOfReminder: tagColors[0],
+  });
+
+  function handleChange(evt) {
+    const value = evt.target.value;
+    setFormInputs({
+      ...formInputs,
+      [evt.target.name]: value,
     });
+  }
 
-    function handleChange(evt) {
-        const value = evt.target.value;
-        setFormInputs({
-            ...formInputs,
-            [evt.target.name]: value,
+  const getFormInfo = () => {
+    return {
+      title: formInputs.reminderTitle,
+      description: formInputs.reminderDescription,
+      color: formInputs.colorOfReminder,
+      start: startMoment,
+      end: endMoment,
+      date: `${("0" + day).slice(-2)}-${("0" + month).slice(-2)}-${year}`,
+    };
+  };
+
+  const insertReminder = async () => {
+    if (true) {
+      await axios
+        .post("http://localhost:5000/reminders", getFormInfo())
+        .then((response) => {
+          //   setRequestAwnser(response.data);
+          //   navigate("/")
+        })
+        .catch((error) => {
+          //   setRequestErrorAwnser(error.response.data);
         });
     }
+    setOpen(!open);
+  };
+  const handleToggle = () => {
+    setOpen(!open);
+  };
 
-    const getFormInfo = () => {
-        return {
-            "reminder-title": formInputs.reminderTitle,
-            "reminder-description": formInputs.reminderDescription,
-            "reminder-color": formInputs.colorOfReminder,
-            "reminder-start": startMoment,
-            "reminder-end": endMoment,
-            "reminder-date": `${day}-${("0" + month).slice(-2)}-${year}`,
-        };
-    };
+  const handleClose = () => {
+    setOpen(!open);
+  };
+  return (
+    <div>
+      <Backdrop open={open}>
+        <Board>
+          <DayModalBox>
+            <DayInfo>
+              <div>
+                {("0" + day).slice(-2)}-{("0" + month).slice(-2)}-{year}
+              </div>
+              <CloseButton onClick={handleClose}>
+                <AiFillCloseCircle />
+              </CloseButton>
+            </DayInfo>
+            <TextField
+              fullWidth
+              id="outlined-name"
+              label="Lembrete"
+              name="reminderTitle"
+              value={formInputs.reminderTitle}
+              onChange={handleChange}
+              inputProps={{ maxLength: 30 }}
+            />
 
-    const insertReminder = async () => {
-        if (true) {
-            await axios
-                .post("http://localhost:5000/reminders", getFormInfo())
-                .then((response) => {
-                    //   setRequestAwnser(response.data);
-                    //   navigate("/")
-                })
-                .catch((error) => {
-                    //   setRequestErrorAwnser(error.response.data);
-                });
-        }
-    };
-    const handleToggle = () => {
-        setOpen(!open);
-    };
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <HourPickerBox>
+                <DesktopTimePicker
+                  label="Inicio"
+                  value={startMoment}
+                  onChange={(newValue) => {
+                    setStartMoment(newValue);
+                  }}
+                  renderInput={(params) => <TextField {...params} />}
+                />
 
-    const handleClose = () => {
-        setOpen(!open);
-    };
-    return (
-        <div>
-        <Backdrop open={open}>
-            <Board>
-                <DayModalBox>
-                    <DayInfo>
-                        <div>
-                        {("0" + day).slice(-2)}-{("0" + month).slice(-2)}-{year}
-                        </div>
-                        <CloseButton onClick={handleClose}>
-                            <AiFillCloseCircle />
-                        </CloseButton>
-                    </DayInfo>
-                    <TextField
-                        fullWidth
-                        id="outlined-name"
-                        label="Lembrete"
-                        name="reminderTitle"
-                        value={formInputs.reminderTitle}
-                        onChange={handleChange}
-                        inputProps={{ maxLength: 30 }}
-                    />
-
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <HourPickerBox>
-                            <DesktopTimePicker
-                                label="Inicio"
-                                value={startMoment}
-                                onChange={(newValue) => {
-                                    setStartMoment(newValue);
-                                }}
-                                renderInput={(params) => <TextField {...params} />}
-                            />
-
-                            <DesktopTimePicker
-                                label="Fim"
-                                value={endMoment}
-                                onChange={(newValue) => {
-                                    setEndMoment(newValue);
-                                }}
-                                renderInput={(params) => <TextField {...params} />}
-                            />
-                            <TextField
-                                id="outlined-select-currency"
-                                select
-                                label="Cor"
-                                name="colorOfReminder"
-                                value={formInputs.colorOfReminder}
-                                onChange={handleChange}
-                            >
-                                {tagColors.map((item) => (
-                                    <MenuItem key={item} value={item}>
-                                        <ColorDisplay
-                                            style={{ backgroundColor: item }}
-                                        ></ColorDisplay>
-                                    </MenuItem>
-                                ))}
-                            </TextField>
-                        </HourPickerBox>
-                        <TextField
-                            type="text"
-                            fullWidth
-                            label="Descrição"
-                            name="reminderDescription"
-                            value={formInputs.reminderDescription}
-                            onChange={handleChange}
-                            id="outlined-multiline-flexible"
-                            multiline
-                            rows={4}
-                            maxRows={4}
-                        />
-                    </LocalizationProvider>
-                    {JSON.stringify(getFormInfo())}
-                    <SendButton
-                        onClick={() => {
-                            insertReminder();
-                        }}
-                    >
-                        Criar lembrete
-                    </SendButton>
-                </DayModalBox>
-            </Board>
-        </Backdrop>
-        </div>
-    );
+                <DesktopTimePicker
+                  label="Fim"
+                  value={endMoment}
+                  onChange={(newValue) => {
+                    setEndMoment(newValue);
+                  }}
+                  renderInput={(params) => <TextField {...params} />}
+                />
+                <TextField
+                  id="outlined-select-currency"
+                  select
+                  label="Cor"
+                  name="colorOfReminder"
+                  value={formInputs.colorOfReminder}
+                  onChange={handleChange}
+                >
+                  {tagColors.map((item) => (
+                    <MenuItem key={item} value={item}>
+                      <ColorDisplay
+                        style={{ backgroundColor: item }}
+                      ></ColorDisplay>
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </HourPickerBox>
+              <TextField
+                type="text"
+                fullWidth
+                label="Descrição"
+                name="reminderDescription"
+                value={formInputs.reminderDescription}
+                onChange={handleChange}
+                id="outlined-multiline-flexible"
+                multiline
+                rows={4}
+                maxRows={4}
+              />
+            </LocalizationProvider>
+            <SendButton
+              onClick={() => {
+                insertReminder();
+              }}
+            >
+              Criar lembrete
+            </SendButton>
+          </DayModalBox>
+        </Board>
+      </Backdrop>
+    </div>
+  );
 }
