@@ -7,7 +7,7 @@ import Day from "../Day/Day";
 const Board = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-
+  width: 90%;
   background-color: #f6f9fa;
   grid-gap: 16px;
   border-radius: 16px;
@@ -19,7 +19,7 @@ const BoardBox = styled.div`
   padding: 32px;
 
   display: flex;
-  width: 50vw;
+  width: 80vw;
   margin: auto;
   justify-content: space-between;
 `;
@@ -47,8 +47,8 @@ const DaysOfWeek = styled.div`
   text-transform: capitalize;
   border-radius: 8px;
   font-family: "Varela Round", sans-serif;
-  font-size: calc((12vw - 4.5rem) / 7);
-  font-weight: 500;
+  font-size: calc((12vw - 3.5rem) / 7);
+  font-weight: 550;
 `;
 
 const MonthTitle = styled.div`
@@ -92,12 +92,6 @@ const updateOurStates = (referenceMonth, referenceYear) => {
     "Saturday",
   ];
   const paddingDays = weekdays.indexOf(dateString.split(", ")[0]);
-
-  //console.log(paddingDays);
-
-  //console.log("first day of month", firstDayOfMonth);
-
-  //console.log("Days in month", daysInMonth);
 
   return {
     paddingDays: paddingDays,
@@ -182,7 +176,12 @@ function CalendarBoard() {
                 <DaysOfWeek>{item}</DaysOfWeek>
               ))}
               {data.days.map((item) => (
-                <Day item={item} openDay={openDay} />
+                <Day
+                  item={item}
+                  openDay={openDay}
+                  open={open}
+                  setOpen={setOpen}
+                />
               ))}
             </DaysBox>
           </Board>

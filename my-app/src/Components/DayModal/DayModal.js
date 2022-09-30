@@ -118,9 +118,6 @@ export default function DayModal({ year, month, day, open, setOpen }) {
     }
     setOpen(!open);
   };
-  const handleToggle = () => {
-    setOpen(!open);
-  };
 
   const handleClose = () => {
     setOpen(!open);
