@@ -61,68 +61,75 @@ const AddButton = styled.div`
   font-size: calc((12vw - 4.5rem) / 7);
 `;
 
-const EventsOfDay = ({
-  events,
-  reminderModalIsOpen,
-  setReminderModalIsOpen,
-}) => {
-  const [reminderItem, setReminderItem] = useState(false);
-  if (events) {
-    console.log("events", events.reminders);
+const renderTitle = (title) => {
+    if (title === '') return 'sem titulo'
+    return title;
 
-    return (
-      <>
-        {" "}
-        <ReminderBox>
-          {events.reminders.map((item) => (
-            <Reminder
-              onClick={() => {
-                setReminderModalIsOpen(true);
-                setReminderItem(item);
-              }}
-              style={{ backgroundColor: item.color }}
-            >
-              {item.title}
-            </Reminder>
-          ))}
-        </ReminderBox>
-        <ReminderModal
-          reminderItem={reminderItem}
-          reminderModalIsOpen={reminderModalIsOpen}
-          setReminderModalIsOpen={setReminderModalIsOpen}
-        />
-      </>
-    );
-  }
+}
+
+
+const EventsOfDay = ({
+    events,
+    reminderModalIsOpen,
+    setReminderModalIsOpen,
+}) => {
+    const [reminderItem, setReminderItem] = useState(false);
+    if (events) {
+        console.log("events", events.reminders);
+
+        return (
+            <>
+                {" "}
+                <ReminderBox>
+                    {events.reminders.map((item) => (
+                        <Reminder
+                            onClick={() => {
+                                setReminderModalIsOpen(true);
+                                setReminderItem(item);
+                            }}
+                            style={{ backgroundColor: item.color }}
+                        >
+                            {renderTitle(item.title)}
+                        </Reminder>
+                    ))}
+                </ReminderBox>
+                <ReminderModal
+                    reminderItem={reminderItem}
+                    reminderModalIsOpen={reminderModalIsOpen}
+                    setReminderModalIsOpen={setReminderModalIsOpen}
+                />
+            </>
+        );
+    }
 };
 
 export default function Day({ item, openDay }) {
-  const [reminderModalIsOpen, setReminderModalIsOpen] = useState(false);
+    const [reminderModalIsOpen, setReminderModalIsOpen] = useState(false);
 
-  if (item.eventsOfDay) {
-    console.log("events of day", item);
-  }
+    if (item.eventsOfDay) {
+        console.log("events of day", item);
+    }
 
-  if (item.isValideDay) {
-    return (
-      <DayBox>
-        <DayHeader>
-          <DayNumber>{item.day}</DayNumber>
-          <AddButton
-            onClick={() => {
-              openDay(item.day);
-            }}
-          >
-            <AiFillPlusCircle />
-          </AddButton>
-        </DayHeader>
-        <EventsOfDay
-          events={item.eventsOfDay}
-          reminderModalIsOpen={reminderModalIsOpen}
-          setReminderModalIsOpen={setReminderModalIsOpen}
-        />
-      </DayBox>
-    );
-  }
-  return <EmptyDay> </EmptyDay>;
+    if (item.isValideDay) {
+        return (
+            <DayBox>
+                <DayHeader>
+                    <DayNumber>{item.day}</DayNumber>
+                    <AddButton
+                        onClick={() => {
+                            openDay(item.day);
+                        }}
+                    >
+                        <AiFillPlusCircle />
+                    </AddButton>
+                </DayHeader>
+                <EventsOfDay
+                    events={item.eventsOfDay}
+                    reminderModalIsOpen={reminderModalIsOpen}
+                    setReminderModalIsOpen={setReminderModalIsOpen}
+                />
+            </DayBox>
+        );
+    }
+    return <EmptyDay> </EmptyDay>;
 }

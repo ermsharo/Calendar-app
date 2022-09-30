@@ -19,7 +19,7 @@ const BoardBox = styled.div`
   padding: 32px;
 
   display: flex;
-  width: 80vw;
+  width: 60vw;
   margin: auto;
   justify-content: space-between;
 `;

@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Backdrop from "@mui/material/Backdrop";
 import { AiFillCloseCircle, AiFillDelete } from "react-icons/ai";
+import axios from "axios";
 
 const Title = styled.div`
   font-size: calc((12vw - 4.5rem) / 7);
@@ -61,36 +62,72 @@ const Board = styled.div`
   z-index: 5;
 `;
 
+const renderTitle = (title) => {
+    if (title === '') return 'sem titulo'
+    return title;
+
+}
+
 export default function ReminderModal({
-  reminderItem,
-  reminderModalIsOpen,
-  setReminderModalIsOpen,
+    reminderItem,
+    reminderModalIsOpen,
+    setReminderModalIsOpen,
 }) {
-  return (
-    <div>
-      <Backdrop open={reminderModalIsOpen}>
-        <Board>
-          <DayModalBox style={{ backgroundColor: reminderItem.color }}>
-            <DayInfo>
-              <div>{reminderItem.date}</div>
-              <CloseButton
-                onClick={() => {
-                  setReminderModalIsOpen(false);
-                }}
-              >
-                <AiFillCloseCircle />
-              </CloseButton>
-            </DayInfo>
-            <Title>
-              {reminderItem.title}
-              <DeleteButton>
-                <AiFillDelete />
-              </DeleteButton>
-            </Title>
-            <Description>{reminderItem.description} </Description>
-          </DayModalBox>
-        </Board>
-      </Backdrop>
-    </div>
-  );
+
+    const requestInfo = () => {
+        return {
+            id: reminderItem.id,
+
+        };
+    };
+
+
+
+    const removeReminder = async () => {
+        if (true) {
+            await axios
+                .delete(`http://localhost:5000/reminders?id=${reminderItem.id}`)
+                .then((response) => {
+
+                })
+                .catch((error) => {
+
+                });
+        }
+        setReminderModalIsOpen(!reminderModalIsOpen);
+    };
+
+    const deleteReminder = () => {
+        removeReminder();
+        setReminderModalIsOpen(!reminderModalIsOpen);
+    }
+    return (
+        <div>
+            <Backdrop open={reminderModalIsOpen}>
+                <Board>
+                    <DayModalBox style={{ backgroundColor: reminderItem.color }}>
+                        <DayInfo>
+                            <div>{reminderItem.date}</div>
+                            <CloseButton
+                                onClick={() => {
+                                    setReminderModalIsOpen(false);
+                                }}
+                            >
+                                <AiFillCloseCircle />
+                            </CloseButton>
+                        </DayInfo>
+                        <Title>
+                            {renderTitle(reminderItem.title)}
+                            <DeleteButton>
+                                <AiFillDelete onClick={() => {
+                                    deleteReminder()
+                                }} />
+                            </DeleteButton>
+                        </Title>
+                        <Description>{reminderItem.description} </Description>
+                    </DayModalBox>
+                </Board>
+            </Backdrop>
+        </div>
+    );
 }
