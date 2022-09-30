@@ -60,14 +60,13 @@ const Day = styled.div`
   text-align: center;
   text-transform: capitalize;
   aspect-ratio: 1 / 1;
-  padding: 8px;
+  padding: 12px;
   font-family: "Asap Medium", sans-serif;
   font-family: "Asap", sans-serif;
 
   background-color: white;
   border-radius: 8px;
   font-weight: 600;
-  text-align: left;
 `;
 
 const EmptyDay = styled.div`
@@ -197,8 +196,13 @@ function CalendarBoard() {
   const [year, setYear] = useState(actualYear);
   const [day, setDay] = useState(actualDay);
 
-  const [{ data, isLoading, isError }, changePage, setRefresh] =
-    GetCalendarInfo();
+  const [open, setOpen] = useState(false);
+
+  const [{ data, isLoading, isError }, setUrl] = GetCalendarInfo(month, year);
+
+  // useEffect(() => {
+
+  // }, [month, year]);
 
   const changeToNextMonth = () => {
     if (month < 12) {
@@ -207,6 +211,7 @@ function CalendarBoard() {
       setMonth(1);
       setYear(year + 1);
     }
+    setUrl(`http://localhost:5000/calendar/?month=${month}&year=${year}`);
   };
 
   const changeToPreviousMonth = () => {
@@ -216,64 +221,63 @@ function CalendarBoard() {
     } else {
       setMonth(month - 1);
     }
+    setUrl(`http://localhost:5000/calendar/?month=${month}&year=${year}`);
   };
 
-  useEffect(() => {}, [month, year]);
+  const openDay = (day) =>{
+    setDay(day);
+    setOpen(true)
 
-  if (month < 12) {
-    setMonth(month + 1);
-  } else {
-    setMonth(1);
-    setYear(year + 1);
   }
-}
 
-const changeToPreviousMonth = () => {
-  if (month == 1) {
-    setYear(year - 1);
-    setMonth(12);
-  } else {
-    setMonth(month - 1);
+  if (isError) {
+    return <>error</>;
   }
-};
 
-if (isError) {
-  return <>error</>;
-}
+  if (isLoading) {
+    return <>loading</>;
+  }
 
-if (isLoading) {
-  return <>loading</>;
-}
+  if (data) {
+    return (
+      <>
+        <BoardBox>
+          <ChangeMonthArrow>
+            {" "}
+            <AiFillLeftCircle onClick={changeToPreviousMonth} />
+          </ChangeMonthArrow>
+          <Board>
+            <MonthTitle>
+              {data.month} - {data.year}
+            </MonthTitle>
+            <DaysBox>
+              {daysOfWeekArray.map((item, index) => (
+                <DaysOfWeek>{item}</DaysOfWeek>
+              ))}
+              {data.days.map((item, index) =>
+                item.isValideDay ? (
+                  <Day onClick = {() => {openDay(item.day)}}>{item.day}</Day>
+                ) : (
+                  <EmptyDay> </EmptyDay>
+                )
+              )}
+            </DaysBox>
+          </Board>
+          <ChangeMonthArrow>
+            <AiFillRightCircle onClick={changeToNextMonth} />
+          </ChangeMonthArrow>
+        </BoardBox>
 
-if (data) {
-  return (
-    <>
-      <BoardBox>
-        <ChangeMonthArrow>
-          {" "}
-          <AiFillLeftCircle onClick={changeToPreviousMonth} />
-        </ChangeMonthArrow>
-        <Board>
-          <MonthTitle>
-            {monthsOfYear[month - 1]} - {year}
-          </MonthTitle>
-          <DaysBox>
-            {daysOfWeekArray.map((item, index) => (
-              <DaysOfWeek>{item}</DaysOfWeek>
-            ))}
-            {fillCallendarObj(month, year).map((item, index) =>
-              item.isValideDay ? <Day>{item.day}</Day> : <EmptyDay> </EmptyDay>
-            )}
-          </DaysBox>
-        </Board>
-        <ChangeMonthArrow>
-          <AiFillRightCircle onClick={changeToNextMonth} />
-        </ChangeMonthArrow>
-      </BoardBox>
-
-      <DayModal year={year} month={month} day={day} />
-    </>
-  );
+        <DayModal
+          year={year}
+          month={month}
+          day={day}
+          open={open}
+          setOpen={setOpen}
+        />
+      </>
+    );
+  }
 }
 
 export default CalendarBoard;
