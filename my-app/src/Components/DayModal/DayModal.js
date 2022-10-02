@@ -71,7 +71,7 @@ const HourPickerBox = styled.div`
   gap: 32px;
 `;
 
-export default function DayModal({ year, month, day, open, setOpen }) {
+export default function DayModal({ year, month, day, open, setOpen, refreshCalendar }) {
   const [startMoment, setStartMoment] = useState(
     dayjs(`${year}-${day}-${("0" + month).slice(-2)} 12:00`)
   );
@@ -84,6 +84,14 @@ export default function DayModal({ year, month, day, open, setOpen }) {
     reminderDescription: "",
     colorOfReminder: tagColors[0],
   });
+
+  const resetForms = () => {
+    setFormInputs({
+      reminderTitle: "",
+      reminderDescription: "",
+      colorOfReminder: tagColors[0],
+    })
+  }
 
   function handleChange(evt) {
     const value = evt.target.value;
@@ -117,6 +125,8 @@ export default function DayModal({ year, month, day, open, setOpen }) {
         });
     }
     setOpen(!open);
+    resetForms();
+    refreshCalendar();
   };
 
   const handleClose = () => {

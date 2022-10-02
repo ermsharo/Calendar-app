@@ -123,9 +123,11 @@ function CalendarBoard() {
 
   const [{ data, isLoading, isError }, setUrl] = GetCalendarInfo(month, year);
 
-  // useEffect(() => {
 
-  // }, [month, year]);
+  const refreshCalendar = () => {
+
+    setUrl(`http://localhost:5000/calendar/?month=${month}&year=${year}`);
+  }
 
   const changeToNextMonth = () => {
     if (month < 12) {
@@ -134,7 +136,7 @@ function CalendarBoard() {
       setMonth(1);
       setYear(year + 1);
     }
-    setUrl(`http://localhost:5000/calendar/?month=${month}&year=${year}`);
+    refreshCalendar();
   };
 
   const changeToPreviousMonth = () => {
@@ -144,7 +146,7 @@ function CalendarBoard() {
     } else {
       setMonth(month - 1);
     }
-    setUrl(`http://localhost:5000/calendar/?month=${month}&year=${year}`);
+    refreshCalendar();
   };
 
   const openDay = (day) => {
@@ -196,6 +198,7 @@ function CalendarBoard() {
           day={day}
           open={open}
           setOpen={setOpen}
+          refreshCalendar = {refreshCalendar}
         />
       </>
     );
