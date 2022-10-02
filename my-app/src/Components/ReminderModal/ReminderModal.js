@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Backdrop from "@mui/material/Backdrop";
-import { AiFillCloseCircle, AiFillDelete } from "react-icons/ai";
+import { AiFillCloseCircle, AiFillDelete, AiFillEdit } from "react-icons/ai";
 import axios from "axios";
 import Button from "@mui/material/Button";
 
@@ -36,12 +36,17 @@ const DayInfo = styled.div`
   justify-content: space-between;
 `;
 
-const CloseButton = styled.div`
+const ActionButton = styled.div`
   cursor: pointer;
   font-size: 24px;
   display: flex;
   flex-direction: column;
   justify-content: center;
+`;
+
+const ActionButtons = styled.div`
+  display: flex;
+  gap: 16px;
 `;
 const DayModalBox = styled.div`
   grid-column: 2/7;
@@ -110,16 +115,33 @@ export default function ReminderModal({
           <DayModalBox>
             <DayInfo>
               <div>
-                {reminderItem.date} - {renderTitle(reminderItem.title)}
+                {reminderItem.date} - {renderTitle(reminderItem.title)}{" "}
               </div>
+              <ActionButtons>
+                <ActionButton
+                  onClick={() => {
+                    deleteReminder();
+                  }}
+                >
+                  <AiFillDelete />
+                </ActionButton>
 
-              <CloseButton
-                onClick={() => {
-                  setReminderModalIsOpen(false);
-                }}
-              >
-                <AiFillCloseCircle />
-              </CloseButton>
+                <ActionButton
+                  onClick={() => {
+                    setReminderModalIsOpen(false);
+                  }}
+                >
+                  <AiFillEdit />
+                </ActionButton>
+
+                <ActionButton
+                  onClick={() => {
+                    setReminderModalIsOpen(false);
+                  }}
+                >
+                  <AiFillCloseCircle />
+                </ActionButton>
+              </ActionButtons>
             </DayInfo>
             <SubTilte>
               {" "}
@@ -127,12 +149,12 @@ export default function ReminderModal({
             </SubTilte>
             <SubTilte> {reminderItem.city}</SubTilte>
             <Description>{reminderItem.description} </Description>
-            <MarkAsDoneButton>
+            {/* <MarkAsDoneButton>
               {" "}
               <Button fullWidth variant="contained">
                 Marcar como feita
               </Button>
-            </MarkAsDoneButton>
+            </MarkAsDoneButton> */}
           </DayModalBox>
         </Board>
       </Backdrop>
