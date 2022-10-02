@@ -26,7 +26,7 @@ export const GetCalendarInfo = (month, year) => {
     };
 
     fetchData();
-  }, [url]);
+  }, [url, refresh]);
 
-  return [{ data, isLoading, isError }, setUrl];
+  return [{ data, isLoading, isError }, setUrl, setRefresh];
 };

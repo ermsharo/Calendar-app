@@ -120,14 +120,20 @@ function CalendarBoard() {
   const [day, setDay] = useState(actualDay);
 
   const [open, setOpen] = useState(false);
+  const [refreshBoard, setRefreshBoard] = useState(false);
 
-  const [{ data, isLoading, isError }, setUrl] = GetCalendarInfo(month, year);
+  const [{ data, isLoading, isError }, setUrl, setRefresh] = GetCalendarInfo(month, year);
 
+  useEffect(() => {
+
+
+  }, [setUrl]);
 
   const refreshCalendar = () => {
-
     setUrl(`http://localhost:5000/calendar/?month=${month}&year=${year}`);
-  }
+    setRefreshBoard(!refreshBoard);
+    setRefresh(refreshBoard);
+  };
 
   const changeToNextMonth = () => {
     if (month < 12) {
@@ -183,6 +189,7 @@ function CalendarBoard() {
                   openDay={openDay}
                   open={open}
                   setOpen={setOpen}
+                  refreshCalendar={refreshCalendar}
                 />
               ))}
             </DaysBox>
@@ -198,7 +205,7 @@ function CalendarBoard() {
           day={day}
           open={open}
           setOpen={setOpen}
-          refreshCalendar = {refreshCalendar}
+          refreshCalendar={refreshCalendar}
         />
       </>
     );
