@@ -122,12 +122,12 @@ function CalendarBoard() {
   const [open, setOpen] = useState(false);
   const [refreshBoard, setRefreshBoard] = useState(false);
 
-  const [{ data, isLoading, isError }, setUrl, setRefresh] = GetCalendarInfo(month, year);
+  const [{ data, isLoading, isError }, setUrl, setRefresh] = GetCalendarInfo(
+    month,
+    year
+  );
 
-  useEffect(() => {
-
-
-  }, [setUrl]);
+  useEffect(() => {}, [setUrl]);
 
   const refreshCalendar = () => {
     setUrl(`http://localhost:5000/calendar/?month=${month}&year=${year}`);

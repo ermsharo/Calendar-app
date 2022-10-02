@@ -93,14 +93,14 @@ export default function ReminderModal({
   reminderItem,
   reminderModalIsOpen,
   setReminderModalIsOpen,
-  refreshCalendar
+  refreshCalendar,
 }) {
   const removeReminder = async () => {
     if (true) {
       await axios
         .delete(`http://localhost:5000/reminders?id=${reminderItem.id}`)
-        .then(() => { })
-        .catch(() => { });
+        .then(() => {})
+        .catch(() => {});
     }
     setReminderModalIsOpen(!reminderModalIsOpen);
   };
