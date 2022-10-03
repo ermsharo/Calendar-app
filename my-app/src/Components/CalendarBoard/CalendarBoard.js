@@ -63,42 +63,6 @@ const MonthTitle = styled.div`
   text-transform: capitalize;
 `;
 
-const updateOurStates = (referenceMonth, referenceYear) => {
-  const dt = new Date();
-  const day = dt.getDate();
-  console.log("Day", day);
-  console.log("month", day);
-  const year = dt.getFullYear();
-  console.log("Year", year);
-
-  const firstDayOfMonth = new Date(referenceMonth, referenceMonth, 1);
-
-  const daysInMonth = new Date(referenceYear, referenceYear + 1, 0).getDate();
-
-  const dateString = firstDayOfMonth.toLocaleDateString("en-us", {
-    weekday: "long",
-    year: "numeric",
-    month: "numeric",
-    day: "numeric",
-  });
-
-  const weekdays = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ];
-  const paddingDays = weekdays.indexOf(dateString.split(", ")[0]);
-
-  return {
-    paddingDays: paddingDays,
-    daysInMonth: daysInMonth,
-  };
-};
-
 let daysOfWeekArray = [
   "domingo",
   "segunda",
@@ -146,7 +110,7 @@ function CalendarBoard() {
   };
 
   const changeToPreviousMonth = () => {
-    if (month == 1) {
+    if (month === 1) {
       setYear(year - 1);
       setMonth(12);
     } else {

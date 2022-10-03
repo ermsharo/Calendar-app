@@ -1,8 +1,7 @@
 import styled from "styled-components";
 import { AiFillPlusCircle } from "react-icons/ai";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import ReminderModal from "../ReminderModal/ReminderModal";
-import EditionDayModal from "../DayModal/EditionDayModal";
 const DayBox = styled.div`
   text-align: center;
   text-transform: capitalize;
@@ -75,13 +74,7 @@ const EventsOfDay = ({
 }) => {
   const [reminderItem, setReminderItem] = useState(false);
 
-  useEffect(() => {
-    console.log("component updated");
-  }, [events]);
-
   if (events) {
-    console.log("events", events.reminders);
-
     return (
       <>
         <ReminderBox>
@@ -110,11 +103,6 @@ const EventsOfDay = ({
 
 export default function Day({ item, openDay, refreshCalendar }) {
   const [reminderModalIsOpen, setReminderModalIsOpen] = useState(false);
-  const [editionModalIsOpen, setEditionModalIsOpen] = useState(false);
-
-  if (item.eventsOfDay) {
-    console.log("events of day", item);
-  }
 
   if (item.isValideDay) {
     return (

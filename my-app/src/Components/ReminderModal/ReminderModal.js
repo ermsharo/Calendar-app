@@ -182,7 +182,6 @@ export default function ReminderModal({
     refreshCalendar();
   };
 
-  console.log("Reminder ->", reminderItem);
   return (
     <>
       <div>
@@ -240,6 +239,15 @@ export default function ReminderModal({
                       <AiFillCloseCircle />
                     </CloseButton>
                   </DayInfo>
+                  <TextField
+                    fullWidth
+                    id="outlined-name"
+                    label="Lembrete"
+                    name="reminderTitle"
+                    value={formInputs.reminderTitle}
+                    onChange={handleChange}
+                    inputProps={{ maxLength: 30 }}
+                  />
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <HourPickerBox>
                       <DesktopTimePicker
@@ -292,6 +300,7 @@ export default function ReminderModal({
                   <SendButton
                     onClick={() => {
                       editReminder();
+                      setEditionModalIsOpen(false);
                     }}
                   >
                     Editar lembrete
