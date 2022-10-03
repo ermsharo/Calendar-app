@@ -15,7 +15,7 @@ const Title = styled.div`
   font-size: 24px;
   text-align: left;
   padding: 8px 0px;
-`
+`;
 
 const SubTilte = styled.div`
   font-size: 24px;
@@ -33,9 +33,6 @@ const ColorDisplay = styled.div`
   margin: auto;
   height: 32px;
 `;
-
-
-
 
 const DayInfo = styled.div`
   font-size: 24px;
@@ -68,18 +65,6 @@ const DayModalBox = styled.div`
   input {
     font-family: "Varela Round", sans-serif;
   }
-  button {
-    font-family: "Varela Round", sans-serif;
-    font-weight: 700;
-    background-color: #ef4136;
-    border-radius: 20px;
-    margin-top: 16px;
-
-    &:hover {
-      background-color: #ef4136;
-      opacity: 0.9;
-    }
-  }
 `;
 
 const Board = styled.div`
@@ -110,6 +95,17 @@ const SendButton = styled.div`
   border-radius: 5px;
 `;
 
+const MeaningInfoBox = styled.div`
+  border: 2px solid red;
+`;
+
+const EditMeaningInfoBox = styled.div`
+  border: 2px solid blue;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`;
+
 const renderTitle = (title) => {
   if (title === "") return "sem titulo";
   return title;
@@ -124,12 +120,17 @@ export default function ReminderModal({
   const [editionModalIsOpen, setEditionModalIsOpen] = useState(false);
   const [startMoment, setStartMoment] = useState(reminderItem.start);
   const [endMoment, setEndMoment] = useState(reminderItem.end);
+  const [formInputs, setFormInputs] = useState({
+    reminderTitle: reminderItem.title,
+    reminderDescription: reminderItem.description,
+    colorOfReminder: reminderItem.color,
+  });
   const removeReminder = async () => {
     if (true) {
       await axios
         .delete(`http://localhost:5000/reminders?id=${reminderItem.id}`)
-        .then(() => { })
-        .catch(() => { });
+        .then(() => {})
+        .catch(() => {});
     }
     setReminderModalIsOpen(!reminderModalIsOpen);
   };
@@ -142,7 +143,6 @@ export default function ReminderModal({
 
   const OpenEditModal = () => {
     setEditionModalIsOpen(true);
-    setReminderModalIsOpen(false);
   };
   function handleChange(evt) {
     const value = evt.target.value;
@@ -152,154 +152,156 @@ export default function ReminderModal({
     });
   }
 
-  const [formInputs, setFormInputs] = useState({
-    reminderTitle: reminderItem.title,
-    reminderDescription: reminderItem.description,
-    colorOfReminder: reminderItem.color,
-  });
+  const getFormInfo = () => {
+    return {
+      title: formInputs.reminderTitle,
+      description: formInputs.reminderDescription,
+      color: formInputs.colorOfReminder,
+      start: startMoment,
+      end: endMoment,
+      date: `${("0" + reminderItem.day).slice(-2)}-${(
+        "0" + reminderItem.month
+      ).slice(-2)}-${reminderItem.year}`,
+    };
+  };
 
+  const editReminder = async () => {
+    console.log("Working", getFormInfo());
+    if (true) {
+      await axios
+        .put("http://localhost:5000/reminders", getFormInfo())
+        .then((response) => {
+          //   setRequestAwnser(response.data);
+          //   navigate("/")
+        })
+        .catch((error) => {
+          //   setRequestErrorAwnser(error.response.data);
+        });
+    }
+    setReminderModalIsOpen(false);
+    refreshCalendar();
+  };
 
-  console.log("Reminder ->", reminderItem)
+  console.log("Reminder ->", reminderItem);
   return (
     <>
-
       <div>
         <Backdrop open={reminderModalIsOpen}>
           <Board>
             <DayModalBox>
-           {JSON.stringify(reminderItem)}
-           
-              <DayInfo>
-                <div>
-                  {reminderItem.date}
-                </div>
+              {!editionModalIsOpen ? (
+                <MeaningInfoBox>
+                  <DayInfo>
+                    <div>{reminderItem.date}</div>
 
-                <ActionButtons>
-                  <ActionButton
+                    <ActionButtons>
+                      <ActionButton
+                        onClick={() => {
+                          deleteReminder();
+                        }}
+                      >
+                        <AiFillDelete />
+                      </ActionButton>
+
+                      <ActionButton
+                        onClick={() => {
+                          OpenEditModal();
+                        }}
+                      >
+                        <AiFillEdit />
+                      </ActionButton>
+
+                      <ActionButton
+                        onClick={() => {
+                          setReminderModalIsOpen(false);
+                        }}
+                      >
+                        <AiFillCloseCircle />
+                      </ActionButton>
+                    </ActionButtons>
+                  </DayInfo>
+                  <Title>{renderTitle(reminderItem.title)}</Title>
+                  <SubTilte>
+                    inicio: {reminderItem.start} fim:{reminderItem.start}
+                  </SubTilte>
+                  <SubTilte> {reminderItem.city}</SubTilte>
+                  <Description>{reminderItem.description} </Description>
+                </MeaningInfoBox>
+              ) : (
+                <EditMeaningInfoBox>
+                  {" "}
+                  <DayInfo>
+                    <div>{reminderItem.date}</div>
+                    <CloseButton
+                      onClick={() => {
+                        setReminderModalIsOpen(false);
+                      }}
+                    >
+                      <AiFillCloseCircle />
+                    </CloseButton>
+                  </DayInfo>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <HourPickerBox>
+                      <DesktopTimePicker
+                        label="Inicio"
+                        value={startMoment}
+                        onChange={(newValue) => {
+                          setStartMoment(newValue);
+                        }}
+                        renderInput={(params) => <TextField {...params} />}
+                      />
+
+                      <DesktopTimePicker
+                        label="Fim"
+                        value={endMoment}
+                        onChange={(newValue) => {
+                          setEndMoment(newValue);
+                        }}
+                        renderInput={(params) => <TextField {...params} />}
+                      />
+                      <TextField
+                        id="outlined-select-currency"
+                        select
+                        label="Cor"
+                        name="colorOfReminder"
+                        value={formInputs.colorOfReminder}
+                        onChange={handleChange}
+                      >
+                        {tagColors.map((item) => (
+                          <MenuItem key={item} value={item}>
+                            <ColorDisplay
+                              style={{ backgroundColor: item }}
+                            ></ColorDisplay>
+                          </MenuItem>
+                        ))}
+                      </TextField>
+                    </HourPickerBox>
+                    <TextField
+                      type="text"
+                      fullWidth
+                      label="Descrição"
+                      name="reminderDescription"
+                      value={formInputs.reminderDescription}
+                      onChange={handleChange}
+                      id="outlined-multiline-flexible"
+                      multiline
+                      rows={4}
+                      maxRows={4}
+                    />
+                  </LocalizationProvider>
+                  <SendButton
                     onClick={() => {
-                      deleteReminder();
+                      editReminder();
                     }}
                   >
-                    <AiFillDelete />
-                  </ActionButton>
-
-                  <ActionButton
-                    onClick={() => {
-                      OpenEditModal();
-                    }}
-                  >
-                    <AiFillEdit />
-                  </ActionButton>
-
-                  <ActionButton
-                    onClick={() => {
-                      setReminderModalIsOpen(false);
-                    }}
-                  >
-                    <AiFillCloseCircle />
-                  </ActionButton>
-                </ActionButtons>
-              </DayInfo>
-              <Title>{renderTitle(reminderItem.title)}</Title>
-              <SubTilte>
-                inicio: {reminderItem.start} fim:{reminderItem.start}
-              </SubTilte>
-              <SubTilte> {reminderItem.city}</SubTilte>
-              <Description>{reminderItem.description} </Description>
-
-
-              <DayInfo>
-                <div>{reminderItem.date}</div>
-                <CloseButton     onClick={() => {
-                      setReminderModalIsOpen(false);
-                    }}>
-                  <AiFillCloseCircle />
-                </CloseButton>
-              </DayInfo>
-              <TextField
-                fullWidth
-                id="outlined-name"
-                label="Lembrete"
-                name="reminderTitle"
-                value={formInputs.reminderTitle}
-                onChange={handleChange}
-                inputProps={{ maxLength: 30 }}
-              />
-
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <HourPickerBox>
-                  <DesktopTimePicker
-                    label="Inicio"
-                    value={startMoment}
-                    onChange={(newValue) => {
-                      setStartMoment(newValue);
-                    }}
-                    renderInput={(params) => <TextField {...params} />}
-                  />
-
-                  <DesktopTimePicker
-                    label="Fim"
-                    value={endMoment}
-                    onChange={(newValue) => {
-                      setEndMoment(newValue);
-                    }}
-                    renderInput={(params) => <TextField {...params} />}
-                  />
-                  <TextField
-                    id="outlined-select-currency"
-                    select
-                    label="Cor"
-                    name="colorOfReminder"
-                    value={formInputs.colorOfReminder}
-                    onChange={handleChange}
-                  >
-                    {tagColors.map((item) => (
-                      <MenuItem key={item} value={item}>
-                        <ColorDisplay
-                          style={{ backgroundColor: item }}
-                        ></ColorDisplay>
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                </HourPickerBox>
-                <TextField
-                  type="text"
-                  fullWidth
-                  label="Descrição"
-                  name="reminderDescription"
-                  value={formInputs.reminderDescription}
-                  onChange={handleChange}
-                  id="outlined-multiline-flexible"
-                  multiline
-                  rows={4}
-                  maxRows={4}
-                />
-              </LocalizationProvider>
-
-              <SendButton
-                onClick={() => {
-                  // editReminder();
-                }}
-              >
-                Editar lembrete
-              </SendButton>
-
+                    Editar lembrete
+                  </SendButton>
+                </EditMeaningInfoBox>
+              )}
             </DayModalBox>
-
-
-
-
           </Board>
-
-
-
         </Backdrop>
       </div>
-
-
-
-
-
     </>
   );
 }
