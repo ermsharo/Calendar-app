@@ -4,6 +4,7 @@ import Backdrop from "@mui/material/Backdrop";
 import { AiFillCloseCircle, AiFillDelete, AiFillEdit } from "react-icons/ai";
 import axios from "axios";
 import Button from "@mui/material/Button";
+import { useState, useEffect } from "react";
 
 const SubTilte = styled.div`
   font-size: 24px;
@@ -77,9 +78,6 @@ const DayModalBox = styled.div`
 const Board = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-
-  /* -webkit-box-shadow: 5px 9px 15px -2px rgba(0, 0, 0, 0.3);
-  box-shadow: 5px 9px 15px -2px rgba(0, 0, 0, 0.3); */
   width: 100%;
   z-index: 5;
 `;
@@ -95,6 +93,8 @@ export default function ReminderModal({
   setReminderModalIsOpen,
   refreshCalendar,
 }) {
+  const [editionMode, setEditionMode] = useState(false);
+
   const removeReminder = async () => {
     if (true) {
       await axios
@@ -111,55 +111,61 @@ export default function ReminderModal({
     refreshCalendar();
   };
   return (
-    <div>
-      <Backdrop open={reminderModalIsOpen}>
-        <Board>
-          <DayModalBox>
-            <DayInfo>
-              <div>
-                {reminderItem.date} - {renderTitle(reminderItem.title)}{" "}
-              </div>
-              <ActionButtons>
-                <ActionButton
-                  onClick={() => {
-                    deleteReminder();
-                  }}
-                >
-                  <AiFillDelete />
-                </ActionButton>
+    <>
+      {!editionMode ? (
+        <div>
+          <Backdrop open={reminderModalIsOpen}>
+            <Board>
+              <DayModalBox>
+                <DayInfo>
+                  <div>
+                    {reminderItem.date} - {renderTitle(reminderItem.title)}{" "}
+                  </div>
+                  <ActionButtons>
+                    <ActionButton
+                      onClick={() => {
+                        deleteReminder();
+                      }}
+                    >
+                      <AiFillDelete />
+                    </ActionButton>
 
-                <ActionButton
-                  onClick={() => {
-                    setReminderModalIsOpen(false);
-                  }}
-                >
-                  <AiFillEdit />
-                </ActionButton>
+                    <ActionButton
+                      onClick={() => {
+                        setReminderModalIsOpen(false);
+                      }}
+                    >
+                      <AiFillEdit />
+                    </ActionButton>
 
-                <ActionButton
-                  onClick={() => {
-                    setReminderModalIsOpen(false);
-                  }}
-                >
-                  <AiFillCloseCircle />
-                </ActionButton>
-              </ActionButtons>
-            </DayInfo>
-            <SubTilte>
-              {" "}
-              inicio: {reminderItem.start} fim:{reminderItem.start}
-            </SubTilte>
-            <SubTilte> {reminderItem.city}</SubTilte>
-            <Description>{reminderItem.description} </Description>
-            {/* <MarkAsDoneButton>
-              {" "}
-              <Button fullWidth variant="contained">
-                Marcar como feita
-              </Button>
-            </MarkAsDoneButton> */}
-          </DayModalBox>
-        </Board>
-      </Backdrop>
-    </div>
+                    <ActionButton
+                      onClick={() => {
+                        setReminderModalIsOpen(false);
+                      }}
+                    >
+                      <AiFillCloseCircle />
+                    </ActionButton>
+                  </ActionButtons>
+                </DayInfo>
+                <SubTilte>
+                  {" "}
+                  inicio: {reminderItem.start} fim:{reminderItem.start}
+                </SubTilte>
+                <SubTilte> {reminderItem.city}</SubTilte>
+                <Description>{reminderItem.description} </Description>
+                {/* <MarkAsDoneButton>
+            {" "}
+            <Button fullWidth variant="contained">
+              Marcar como feita
+            </Button>
+          </MarkAsDoneButton> */}
+              </DayModalBox>
+            </Board>
+          </Backdrop>
+        </div>
+      ) : (
+        <> </>
+      )}
+    </>
   );
 }

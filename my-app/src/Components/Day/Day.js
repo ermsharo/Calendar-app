@@ -138,14 +138,6 @@ export default function Day({ item, openDay, refreshCalendar }) {
             refreshCalendar={refreshCalendar}
           />
         </DayBox>
-        {editionModalIsOpen && (
-          <EditionDayModal
-            editionModalIsOpen={editionModalIsOpen}
-            setEditionModalIsOpen={setEditionModalIsOpen}
-            item={item}
-            refreshCalendar={refreshCalendar}
-          />
-        )}
       </>
     );
   }
