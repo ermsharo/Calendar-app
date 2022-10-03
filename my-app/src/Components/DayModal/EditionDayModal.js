@@ -58,6 +58,15 @@ const MarkAsDoneButton = styled.div`
   }
 `;
 
+
+const SendButton = styled.div`
+  background-color: #ef4136;
+  color: white;
+  text-align: center;
+  padding: 16px;
+  border-radius: 5px;
+`;
+
 const ColorDisplay = styled.div`
   width: 32px;
   border-radius: 50%;
@@ -127,27 +136,28 @@ export default function EditDayModal({
         }`,
     };
   };
-
-  const editReminder = async () => {
-
-    await axios
-      .put("http://localhost:5000/reminders", getFormInfo())
-      .then(() => { })
-      .catch(() => { });
-
-    console.log("call")
-    resetForms();
-    refreshCalendar();
-    setEditionModalIsOpen(!editionModalIsOpen);
-  };
-
   const handleClose = () => {
-    setEditionModalIsOpen(!editionModalIsOpen);
+    setEditionModalIsOpen(false);
   };
-  console.log("Item", item);
+  const editReminder = async () => {
+    if (true) {
+      await axios
+        .put("http://localhost:5000/reminders", getFormInfo())
+        .then((response) => { })
+        .catch((error) => { });
+    }
+    console.log("call")
+
+
+
+
+
+  };
+
+
   return (
     <div>
-      <Backdrop open={editionModalIsOpen}>
+
         <Board>
           <DayModalBox>
             <DayInfo>
@@ -216,18 +226,15 @@ export default function EditDayModal({
               />
             </LocalizationProvider>
 
-            <MarkAsDoneButton>
-              <Button
-                onClick={editReminder}
-                fullWidth
-                variant="contained"
-              >
-                Editar lembrete
-              </Button>
-            </MarkAsDoneButton>
+            <SendButton
+              onClick={() => {
+                editReminder();
+              }}
+            >
+              Editar lembrete
+            </SendButton>
           </DayModalBox>
         </Board>
-      </Backdrop>
     </div>
   );
 }

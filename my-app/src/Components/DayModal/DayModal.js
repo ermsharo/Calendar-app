@@ -29,7 +29,7 @@ const BoardBox = styled.div`
 `;
 
 const SendButton = styled.div`
-  background-color: #77201b;
+  background-color: #ef4136;
   color: white;
   text-align: center;
   padding: 16px;
