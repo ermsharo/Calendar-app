@@ -2,6 +2,12 @@ import styled from "styled-components";
 import { AiFillPlusCircle } from "react-icons/ai";
 import React, { useState } from "react";
 import ReminderModal from "../ReminderModal/ReminderModal";
+import Button from "@mui/material/Button";
+import DialogTitle from "@mui/material/DialogTitle";
+import Dialog from "@mui/material/Dialog";
+
+import Typography from "@mui/material/Typography";
+
 const DayBox = styled.div`
   text-align: center;
   text-transform: capitalize;
@@ -50,7 +56,12 @@ const DayHeader = styled.div`
 `;
 
 const DayNumber = styled.div`
-  font-size: calc((12vw - 2.5rem) / 7);
+  font-size: calc((14vw) / 7);
+`;
+
+const WeekendDayNumber = styled.div`
+  font-size: calc((14vw) / 7);
+  color: #ef4136;
 `;
 
 const AddButton = styled.div`
@@ -65,6 +76,54 @@ const renderTitle = (title) => {
   if (title === "") return "sem titulo";
   return title;
 };
+
+function SimpleDialog(props) {
+  const { onClose, selectedValue, open } = props;
+
+  const handleClose = () => {
+    onClose(selectedValue);
+  };
+
+  const handleListItemClick = (value) => {
+    onClose(value);
+  };
+
+  const RemindersList = ()=> {
+    const [open, setOpen] = React.useState(false);
+
+    const handleClickOpen = () => {
+      setOpen(true);
+    };
+
+    const handleClose = (value) => {
+      setOpen(false);
+      // setSelectedValue(value);
+    };
+
+    return (
+      <div>
+        <Typography variant="subtitle1" component="div">
+          Selected: {selectedValue}
+        </Typography>
+        <br />
+        <Button variant="outlined" onClick={handleClickOpen}>
+          Open simple dialog
+        </Button>
+        <SimpleDialog
+          selectedValue={selectedValue}
+          open={open}
+          onClose={handleClose}
+        />
+      </div>
+    );
+  }
+
+  return (
+    <Dialog onClose={handleClose} open={open}>
+      <DialogTitle>Set backup account</DialogTitle>
+    </Dialog>
+  );
+}
 
 const EventsOfDay = ({
   events,
@@ -110,7 +169,12 @@ export default function Day({ item, openDay, refreshCalendar }) {
         {" "}
         <DayBox>
           <DayHeader>
-            <DayNumber>{item.day}</DayNumber>
+            {item.isWeekend ? (
+              <WeekendDayNumber>{item.day}</WeekendDayNumber>
+            ) : (
+              <DayNumber> {item.day}</DayNumber>
+            )}
+
             <AddButton
               onClick={() => {
                 openDay(item.day);
@@ -119,6 +183,7 @@ export default function Day({ item, openDay, refreshCalendar }) {
               <AiFillPlusCircle />
             </AddButton>
           </DayHeader>
+
           <EventsOfDay
             events={item.eventsOfDay}
             reminderModalIsOpen={reminderModalIsOpen}

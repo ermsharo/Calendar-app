@@ -95,12 +95,9 @@ const SendButton = styled.div`
   border-radius: 5px;
 `;
 
-const MeaningInfoBox = styled.div`
-  border: 2px solid red;
-`;
+const MeaningInfoBox = styled.div``;
 
 const EditMeaningInfoBox = styled.div`
-  border: 2px solid blue;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -126,12 +123,10 @@ export default function ReminderModal({
     colorOfReminder: reminderItem.color,
   });
   const removeReminder = async () => {
-    if (true) {
-      await axios
-        .delete(`http://localhost:5000/reminders?id=${reminderItem.id}`)
-        .then(() => {})
-        .catch(() => {});
-    }
+    await axios
+      .delete(`http://localhost:5000/reminders?id=${reminderItem.id}`)
+      .then(() => {})
+      .catch(() => {});
     setReminderModalIsOpen(!reminderModalIsOpen);
   };
 
@@ -166,20 +161,12 @@ export default function ReminderModal({
   };
 
   const editReminder = async () => {
-    console.log("Working", getFormInfo());
-    if (true) {
-      await axios
-        .put("http://localhost:5000/reminders", getFormInfo())
-        .then((response) => {
-          //   setRequestAwnser(response.data);
-          //   navigate("/")
-        })
-        .catch((error) => {
-          //   setRequestErrorAwnser(error.response.data);
-        });
-    }
+    await axios
+      .put("http://localhost:5000/reminders", getFormInfo())
+      .then((response) => {})
+      .catch((error) => {});
+
     setReminderModalIsOpen(false);
-    refreshCalendar();
   };
 
   return (
@@ -231,6 +218,7 @@ export default function ReminderModal({
                   {" "}
                   <DayInfo>
                     <div>{reminderItem.date}</div>
+                    <></>
                     <CloseButton
                       onClick={() => {
                         setReminderModalIsOpen(false);
