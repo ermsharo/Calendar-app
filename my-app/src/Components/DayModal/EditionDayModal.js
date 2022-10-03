@@ -22,13 +22,7 @@ const Board = styled.div`
   z-index: 5;
 `;
 
-const SendButton = styled.div`
-  background-color: #77201b;
-  color: white;
-  text-align: center;
-  padding: 16px;
-  border-radius: 5px;
-`;
+// eslint-disable-next-line no-unused-vars
 
 const DayModalBox = styled.div`
   grid-column: 2/7;
@@ -41,6 +35,26 @@ const DayModalBox = styled.div`
   gap: 16px;
   input {
     font-family: "Varela Round", sans-serif !important;
+  }
+`;
+
+const MarkAsDoneButton = styled.div`
+  width: 50%;
+  margin: auto;
+  input {
+    font-family: "Varela Round", sans-serif;
+  }
+  button {
+    font-family: "Varela Round", sans-serif;
+    font-weight: 700;
+    background-color: #ef4136;
+    border-radius: 20px;
+    margin-top: 16px;
+
+    &:hover {
+      background-color: #ef4136;
+      opacity: 0.9;
+    }
   }
 `;
 
@@ -77,23 +91,19 @@ export default function EditDayModal({
   item,
   refreshCalendar,
 }) {
-  const [startMoment, setStartMoment] = useState(
-    dayjs(`${item.year}-${item.day}-${("0" + item.month).slice(-2)} 12:00`)
-  );
-  const [endMoment, setEndMoment] = useState(
-    dayjs(`${item.year}-${item.day}-${("0" + item.month).slice(-2)} 12:30`)
-  );
+  const [startMoment, setStartMoment] = useState(item.start);
+  const [endMoment, setEndMoment] = useState(item.end);
 
   const [formInputs, setFormInputs] = useState({
-    reminderTitle: "",
-    reminderDescription: "",
-    colorOfReminder: tagColors[0],
+    reminderTitle: item.title,
+    reminderDescription: item.description,
+    colorOfReminder: item.color,
   });
 
   const resetForms = () => {
     setFormInputs({
-      reminderTitle: "",
-      reminderDescription: "",
+      reminderTitle: item["Title"],
+      reminderDescription: item.Description,
       colorOfReminder: tagColors[0],
     });
   };
@@ -113,37 +123,35 @@ export default function EditDayModal({
       color: formInputs.colorOfReminder,
       start: startMoment,
       end: endMoment,
-      date: `${("0" + item.day).slice(-2)}-${("0" + item.month).slice(-2)}-${
-        item.year
-      }`,
+      date: `${("0" + item.day).slice(-2)}-${("0" + item.month).slice(-2)}-${item.year
+        }`,
     };
   };
 
-  const insertReminder = async () => {
-    if (true) {
-      await axios
-        .post("http://localhost:5000/reminders", getFormInfo())
-        .then((response) => {})
-        .catch((error) => {});
-    }
-    setEditionModalIsOpen(!editionModalIsOpen);
+  const editReminder = async () => {
+
+    await axios
+      .put("http://localhost:5000/reminders", getFormInfo())
+      .then(() => { })
+      .catch(() => { });
+
+    console.log("call")
     resetForms();
     refreshCalendar();
+    setEditionModalIsOpen(!editionModalIsOpen);
   };
 
   const handleClose = () => {
     setEditionModalIsOpen(!editionModalIsOpen);
   };
+  console.log("Item", item);
   return (
     <div>
       <Backdrop open={editionModalIsOpen}>
         <Board>
           <DayModalBox>
             <DayInfo>
-              <div>
-                {("0" + item.day).slice(-2)}-{("0" + item.month).slice(-2)}-
-                {item.year}
-              </div>
+              <div>{item.date}</div>
               <CloseButton onClick={handleClose}>
                 <AiFillCloseCircle />
               </CloseButton>
@@ -207,13 +215,16 @@ export default function EditDayModal({
                 maxRows={4}
               />
             </LocalizationProvider>
-            <SendButton
-              onClick={() => {
-                insertReminder();
-              }}
-            >
-              Criar lembrete
-            </SendButton>
+
+            <MarkAsDoneButton>
+              <Button
+                onClick={editReminder}
+                fullWidth
+                variant="contained"
+              >
+                Editar lembrete
+              </Button>
+            </MarkAsDoneButton>
           </DayModalBox>
         </Board>
       </Backdrop>

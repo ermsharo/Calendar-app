@@ -5,7 +5,7 @@ import { AiFillCloseCircle, AiFillDelete, AiFillEdit } from "react-icons/ai";
 import axios from "axios";
 import Button from "@mui/material/Button";
 import { useState, useEffect } from "react";
-
+import EditDayModal from "../DayModal/EditionDayModal";
 const SubTilte = styled.div`
   font-size: 24px;
   text-align: left;
@@ -93,7 +93,7 @@ export default function ReminderModal({
   setReminderModalIsOpen,
   refreshCalendar,
 }) {
-  const [editionMode, setEditionMode] = useState(false);
+  const [editionModalIsOpen, setEditionModalIsOpen] = useState(false);
 
   const removeReminder = async () => {
     if (true) {
@@ -110,9 +110,14 @@ export default function ReminderModal({
     setReminderModalIsOpen(!reminderModalIsOpen);
     refreshCalendar();
   };
+
+  const OpenEditModal = () => {
+    setEditionModalIsOpen(!editionModalIsOpen);
+    setReminderModalIsOpen(!reminderModalIsOpen);
+  };
   return (
     <>
-      {!editionMode ? (
+      {!editionModalIsOpen ? (
         <div>
           <Backdrop open={reminderModalIsOpen}>
             <Board>
@@ -132,7 +137,7 @@ export default function ReminderModal({
 
                     <ActionButton
                       onClick={() => {
-                        setReminderModalIsOpen(false);
+                        OpenEditModal();
                       }}
                     >
                       <AiFillEdit />
@@ -154,7 +159,6 @@ export default function ReminderModal({
                 <SubTilte> {reminderItem.city}</SubTilte>
                 <Description>{reminderItem.description} </Description>
                 {/* <MarkAsDoneButton>
-            {" "}
             <Button fullWidth variant="contained">
               Marcar como feita
             </Button>
@@ -164,7 +168,14 @@ export default function ReminderModal({
           </Backdrop>
         </div>
       ) : (
-        <> </>
+        <>
+          <EditDayModal
+            editionModalIsOpen={editionModalIsOpen}
+            setEditionModalIsOpen={setEditionModalIsOpen}
+            item={reminderItem}
+            refreshCalendar={refreshCalendar}
+          />{" "}
+        </>
       )}
     </>
   );
