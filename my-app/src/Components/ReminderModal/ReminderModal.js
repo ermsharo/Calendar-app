@@ -78,8 +78,8 @@ const Board = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
 
-  -webkit-box-shadow: 5px 9px 15px -2px rgba(0, 0, 0, 0.3);
-  box-shadow: 5px 9px 15px -2px rgba(0, 0, 0, 0.3);
+  /* -webkit-box-shadow: 5px 9px 15px -2px rgba(0, 0, 0, 0.3);
+  box-shadow: 5px 9px 15px -2px rgba(0, 0, 0, 0.3); */
   width: 100%;
   z-index: 5;
 `;

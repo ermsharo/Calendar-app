@@ -123,13 +123,8 @@ export default function EditDayModal({
     if (true) {
       await axios
         .post("http://localhost:5000/reminders", getFormInfo())
-        .then((response) => {
-          //   setRequestAwnser(response.data);
-          //   navigate("/")
-        })
-        .catch((error) => {
-          //   setRequestErrorAwnser(error.response.data);
-        });
+        .then((response) => {})
+        .catch((error) => {});
     }
     setEditionModalIsOpen(!editionModalIsOpen);
     resetForms();
@@ -141,12 +136,13 @@ export default function EditDayModal({
   };
   return (
     <div>
-      {/* <Backdrop open={open}>
+      <Backdrop open={editionModalIsOpen}>
         <Board>
           <DayModalBox>
             <DayInfo>
               <div>
-                {("0" + day).slice(-2)}-{("0" + month).slice(-2)}-{year}
+                {("0" + item.day).slice(-2)}-{("0" + item.month).slice(-2)}-
+                {item.year}
               </div>
               <CloseButton onClick={handleClose}>
                 <AiFillCloseCircle />
@@ -220,7 +216,7 @@ export default function EditDayModal({
             </SendButton>
           </DayModalBox>
         </Board>
-      </Backdrop> */}
+      </Backdrop>
     </div>
   );
 }

@@ -16,10 +16,17 @@ const Board = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
 
-  -webkit-box-shadow: 5px 9px 15px -2px rgba(0, 0, 0, 0.3);
-  box-shadow: 5px 9px 15px -2px rgba(0, 0, 0, 0.3);
   width: 100%;
   z-index: 5;
+`;
+
+const BoardBox = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
 `;
 
 const SendButton = styled.div`
@@ -142,7 +149,7 @@ export default function DayModal({
   return (
     <div>
       <Backdrop open={open}>
-        <Board>
+        <BoardBox>    <Board>
           <DayModalBox>
             <DayInfo>
               <div>
@@ -219,7 +226,8 @@ export default function DayModal({
               Criar lembrete
             </SendButton>
           </DayModalBox>
-        </Board>
+        </Board></BoardBox>
+
       </Backdrop>
     </div>
   );
