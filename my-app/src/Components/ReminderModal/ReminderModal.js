@@ -61,7 +61,7 @@ const DayModalBox = styled.div`
   display: flex;
   flex-direction: column;
   font-family: "Varela Round", sans-serif !important;
-  gap: 16px;
+  gap: 32px;
   input {
     font-family: "Varela Round", sans-serif;
   }
@@ -125,13 +125,19 @@ export default function ReminderModal({
   const removeReminder = async () => {
     await axios
       .delete(`http://localhost:5000/reminders?id=${reminderItem.id}`)
-      .then(() => { })
-      .catch(() => { });
+      .then(() => {})
+      .catch(() => {});
     setReminderModalIsOpen(!reminderModalIsOpen);
   };
 
   const deleteReminder = () => {
     removeReminder();
+    setReminderModalIsOpen(!reminderModalIsOpen);
+    refreshCalendar();
+  };
+
+  const editReminder = () => {
+    editReminderReq();
     setReminderModalIsOpen(!reminderModalIsOpen);
     refreshCalendar();
   };
@@ -158,13 +164,14 @@ export default function ReminderModal({
     };
   };
 
-  const editReminder = async () => {
+  const editReminderReq = async () => {
     await axios
-      .put(`http://localhost:5000/reminders?id=${reminderItem.id}`, getFormInfo())
-      .then((response) => { })
-      .catch((error) => { });
-
-    setReminderModalIsOpen(false);
+      .put(
+        `http://localhost:5000/reminders?id=${reminderItem.id}`,
+        getFormInfo()
+      )
+      .then((response) => {})
+      .catch((error) => {});
   };
 
   return (
@@ -286,7 +293,6 @@ export default function ReminderModal({
                   <SendButton
                     onClick={() => {
                       editReminder();
-                      setEditionModalIsOpen(false);
                     }}
                   >
                     Editar lembrete

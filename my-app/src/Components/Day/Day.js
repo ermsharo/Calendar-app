@@ -2,6 +2,9 @@ import styled from "styled-components";
 import { AiFillPlusCircle } from "react-icons/ai";
 import React, { useState } from "react";
 import ReminderModal from "../ReminderModal/ReminderModal";
+import DayEventList from "./DayEventList";
+import Button from "@mui/material/Button";
+import Badge from "@mui/material/Badge";
 
 const DayBox = styled.div`
   text-align: center;
@@ -10,6 +13,7 @@ const DayBox = styled.div`
   padding: 12px;
   font-family: "Asap Medium", sans-serif;
   font-family: "Asap", sans-serif;
+  width: 100%;
 
   background-color: white;
   border-radius: 8px;
@@ -25,6 +29,7 @@ const EmptyDay = styled.div`
   background-color: white;
   opacity: 0.5;
   border-radius: 8px;
+  z-index: 1;
 `;
 
 const Reminder = styled.div`
@@ -71,7 +76,6 @@ const renderTitle = (title) => {
   if (title === "") return "sem titulo";
   return title;
 };
-
 const EventsOfDay = ({
   events,
   reminderModalIsOpen,
@@ -112,35 +116,53 @@ const EventsOfDay = ({
 
 export default function Day({ item, openDay, refreshCalendar }) {
   const [reminderModalIsOpen, setReminderModalIsOpen] = useState(false);
+  const [reminderListIsOpen, setReminderListIsOpen] = useState(false);
+
+  const openEventsOfDay = () => {
+    setReminderListIsOpen(true);
+  };
+
+  const closeEventsOfDay = () => {
+    setReminderListIsOpen(false);
+  };
 
   if (item.isValideDay) {
+    console.log("Item ->", item);
     return (
       <>
         {" "}
-        <DayBox>
-          <DayHeader>
-            {item.isWeekend ? (
-              <WeekendDayNumber>{item.day}</WeekendDayNumber>
-            ) : (
-              <DayNumber> {item.day}</DayNumber>
-            )}
+        <Badge badgeContent={item.eventsOfDay.count} color="primary">
+          <DayBox
+            onClick={() => {
+              openEventsOfDay();
+            }}
+          >
+            <DayHeader>
+              {item.isWeekend ? (
+                <WeekendDayNumber>{item.day}</WeekendDayNumber>
+              ) : (
+                <DayNumber> {item.day}</DayNumber>
+              )}
 
-            <AddButton
-              onClick={() => {
-                openDay(item.day);
-              }}
-            >
-              <AiFillPlusCircle />
-            </AddButton>
-          </DayHeader>
-
-          <EventsOfDay
-            events={item.eventsOfDay}
-            reminderModalIsOpen={reminderModalIsOpen}
-            setReminderModalIsOpen={setReminderModalIsOpen}
-            refreshCalendar={refreshCalendar}
-          />
-        </DayBox>
+              <AddButton
+                onClick={() => {
+                  openDay(item.day);
+                }}
+              >
+                <AiFillPlusCircle />
+              </AddButton>
+            </DayHeader>
+            <DayEventList
+              closeEventsOfDay={closeEventsOfDay}
+              setReminderListIsOpen={setReminderListIsOpen}
+              reminderListIsOpen={reminderListIsOpen}
+              events={item.eventsOfDay}
+              reminderModalIsOpen={reminderModalIsOpen}
+              setReminderModalIsOpen={setReminderModalIsOpen}
+              refreshCalendar={refreshCalendar}
+            />
+          </DayBox>
+        </Badge>
       </>
     );
   }

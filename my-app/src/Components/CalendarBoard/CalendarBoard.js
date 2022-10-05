@@ -9,7 +9,7 @@ const Board = styled.div`
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
   width: 90%;
   background-color: #f6f9fa;
-  grid-gap: 16px;
+  grid-gap: 24px;
   border-radius: 16px;
   -webkit-box-shadow: 5px 9px 15px -2px rgba(0, 0, 0, 0.3);
   box-shadow: 5px 9px 15px -2px rgba(0, 0, 0, 0.3);
