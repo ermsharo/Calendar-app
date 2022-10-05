@@ -125,8 +125,8 @@ export default function ReminderModal({
   const removeReminder = async () => {
     await axios
       .delete(`http://localhost:5000/reminders?id=${reminderItem.id}`)
-      .then(() => {})
-      .catch(() => {});
+      .then(() => { })
+      .catch(() => { });
     setReminderModalIsOpen(!reminderModalIsOpen);
   };
 
@@ -154,17 +154,15 @@ export default function ReminderModal({
       color: formInputs.colorOfReminder,
       start: startMoment,
       end: endMoment,
-      date: `${("0" + reminderItem.day).slice(-2)}-${(
-        "0" + reminderItem.month
-      ).slice(-2)}-${reminderItem.year}`,
+      date: reminderItem.date,
     };
   };
 
   const editReminder = async () => {
     await axios
-      .put("http://localhost:5000/reminders", getFormInfo())
-      .then((response) => {})
-      .catch((error) => {});
+      .put(`http://localhost:5000/reminders?id=${reminderItem.id}`, getFormInfo())
+      .then((response) => { })
+      .catch((error) => { });
 
     setReminderModalIsOpen(false);
   };
