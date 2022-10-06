@@ -1,9 +1,6 @@
 import styled from "styled-components";
-import { AiFillPlusCircle } from "react-icons/ai";
-import React, { useState, useEffect } from "react";
-import ReminderModal from "../ReminderModal/ReminderModal";
+import React, { useState } from "react";
 import DayEventList from "./DayEventList";
-import Button from "@mui/material/Button";
 import Badge from "@mui/material/Badge";
 
 const DayBox = styled.div`
@@ -62,13 +59,6 @@ const WeekendDayNumber = styled.div`
   margin: auto;
 `;
 
-const AddButton = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  cursor: pointer;
-  font-size: calc((12vw - 4.5rem) / 7);
-`;
 
 const BadgeNumber = styled.div`
   font-size: 16px;
