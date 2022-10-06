@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import DayModal from "../DayModal/DayModal";
 import { AiFillRightCircle, AiFillLeftCircle } from "react-icons/ai";
 import { GetCalendarInfo } from "../../Services/calendarInfo";
@@ -79,19 +79,18 @@ function CalendarBoard() {
   const actualMonth = dt.getMonth();
   const actualYear = dt.getFullYear();
 
-  const [month, setMonth] = useState(actualMonth+1);
+  const [month, setMonth] = useState(actualMonth + 1);
   const [year, setYear] = useState(actualYear);
   const [day, setDay] = useState(actualDay);
 
   const [open, setOpen] = useState(false);
   const [refreshBoard, setRefreshBoard] = useState(false);
 
+
   const [{ data, isLoading, isError }, setUrl, setRefresh] = GetCalendarInfo(
     month,
     year
   );
-
-  useEffect(() => {}, [setUrl]);
 
   const refreshCalendar = () => {
     setUrl(`http://localhost:5000/calendar/?month=${month}&year=${year}`);

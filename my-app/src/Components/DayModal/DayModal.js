@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Backdrop from "@mui/material/Backdrop";
-import Button from "@mui/material/Button";
 import styled from "styled-components";
 import TextField from "@mui/material/TextField";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -98,6 +97,7 @@ export default function DayModal({
     colorOfReminder: tagColors[0],
   });
 
+
   const resetForms = () => {
     setFormInputs({
       reminderTitle: "",
@@ -129,10 +129,8 @@ export default function DayModal({
     if (true) {
       await axios
         .post("http://localhost:5000/reminders", getFormInfo())
-        .then((response) => {
-        })
-        .catch((error) => {
-        });
+        .then(() => {})
+        .catch(() => {});
     }
     setOpen(!open);
     resetForms();
@@ -204,21 +202,21 @@ export default function DayModal({
                   </TextField>
                 </HourPickerBox>
                 <TextField
-                    id="outlined-select-currency"
-                    select
-                    label="Cidade"
-                    name="city"
-                    value={formInputs.colorOfReminder}
-                    onChange={handleChange}
-                  >
-                    {tagColors.map((item) => (
-                      <MenuItem key={item} value={item}>
-                        <ColorDisplay
-                          style={{ backgroundColor: item }}
-                        ></ColorDisplay>
-                      </MenuItem>
-                    ))}
-                  </TextField>
+                  id="outlined-select-currency"
+                  select
+                  label="Cidade"
+                  name="city"
+                  value={formInputs.colorOfReminder}
+                  onChange={handleChange}
+                >
+                  {tagColors.map((item) => (
+                    <MenuItem key={item} value={item}>
+                      <ColorDisplay
+                        style={{ backgroundColor: item }}
+                      ></ColorDisplay>
+                    </MenuItem>
+                  ))}
+                </TextField>
                 <TextField
                   type="text"
                   fullWidth

@@ -59,7 +59,6 @@ const WeekendDayNumber = styled.div`
   margin: auto;
 `;
 
-
 const BadgeNumber = styled.div`
   font-size: 16px;
   color: red;
@@ -103,7 +102,6 @@ export default function Day({ item, openDay, refreshCalendar }) {
                 </WeekendDayNumber>
               ) : (
                 <DayNumber>
-                  {" "}
                   <AlignNumber> {item.day}</AlignNumber>
                 </DayNumber>
               )}
