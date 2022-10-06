@@ -10,16 +10,17 @@ const ReminderBox = styled.div`
   flex-direction: column;
   gap: 8px;
   overflow: auto;
+  font-size: 32px;
 `;
 
 const Reminder = styled.div`
   border-radius: 5px;
   font-size: calc((12vw - 4.5rem) / 7);
   text-align: left;
-  padding: 4px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  padding: 16px 16px;
 `;
 
 const ReminderDisplay = styled.div`
@@ -39,6 +40,23 @@ const ActionButtons = styled.div`
   display: flex;
   gap: 16px;
 `;
+
+const SendButton = styled.div`
+  background-color: #ef4136;
+  color: white;
+  text-align: center;
+  padding: 16px;
+  border-radius: 5px;
+  font-size: 24px;
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  line-height: 20px;
+`;
+
+const Title = styled.div`
+  font-size: 24px;
+`;
 const ActionButton = styled.div`
   cursor: pointer;
   font-size: 24px;
@@ -52,14 +70,6 @@ const DayInfo = styled.div`
   padding: 16px 0px;
   display: flex;
   justify-content: space-between;
-`;
-
-const AddButton = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  cursor: pointer;
-  font-size: calc((12vw - 4.5rem) / 7);
 `;
 
 const EventsOfDay = ({
@@ -121,7 +131,7 @@ export default function DayEventList({
       >
         <ReminderDisplay>
           <DayInfo>
-            <div>{date}</div>
+            <Title>{date}</Title>
 
             <ActionButtons>
               <ActionButton
@@ -141,14 +151,13 @@ export default function DayEventList({
             refreshCalendar={refreshCalendar}
           />
           <>
-            Adicionar lembrete{" "}
-            <AddButton
+            <SendButton
               onClick={() => {
                 openDay(day);
               }}
             >
-              <AiFillPlusCircle />
-            </AddButton>
+              <div>Criar lembrete </div> <AiFillPlusCircle />
+            </SendButton>
           </>
         </ReminderDisplay>
       </Backdrop>

@@ -79,7 +79,7 @@ function CalendarBoard() {
   const actualMonth = dt.getMonth();
   const actualYear = dt.getFullYear();
 
-  const [month, setMonth] = useState(actualMonth);
+  const [month, setMonth] = useState(actualMonth+1);
   const [year, setYear] = useState(actualYear);
   const [day, setDay] = useState(actualDay);
 

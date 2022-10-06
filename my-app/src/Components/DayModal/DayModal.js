@@ -130,11 +130,8 @@ export default function DayModal({
       await axios
         .post("http://localhost:5000/reminders", getFormInfo())
         .then((response) => {
-          //   setRequestAwnser(response.data);
-          //   navigate("/")
         })
         .catch((error) => {
-          //   setRequestErrorAwnser(error.response.data);
         });
     }
     setOpen(!open);
@@ -206,6 +203,22 @@ export default function DayModal({
                     ))}
                   </TextField>
                 </HourPickerBox>
+                <TextField
+                    id="outlined-select-currency"
+                    select
+                    label="Cidade"
+                    name="city"
+                    value={formInputs.colorOfReminder}
+                    onChange={handleChange}
+                  >
+                    {tagColors.map((item) => (
+                      <MenuItem key={item} value={item}>
+                        <ColorDisplay
+                          style={{ backgroundColor: item }}
+                        ></ColorDisplay>
+                      </MenuItem>
+                    ))}
+                  </TextField>
                 <TextField
                   type="text"
                   fullWidth
