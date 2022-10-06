@@ -7,21 +7,47 @@ import Day from "../Day/Day";
 const Board = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-  width: 90%;
+  width: 100%;
   background-color: #f6f9fa;
   grid-gap: 24px;
   border-radius: 16px;
   -webkit-box-shadow: 5px 9px 15px -2px rgba(0, 0, 0, 0.3);
   box-shadow: 5px 9px 15px -2px rgba(0, 0, 0, 0.3);
+
+  @media (min-width: 576px) {
+
+    width: 95%;
+  }
+
+  @media (min-width: 1300px) {
+
+    width: 90%;
+
+  }
+
 `;
 
 const BoardBox = styled.div`
-  padding: 32px;
+  padding: 4px;
 
   display: flex;
-  width: 60vw;
+  width: 95vw;
   margin: auto;
   justify-content: space-between;
+
+
+  @media (min-width: 576px) {
+    padding: 32px;
+    width: 85vw;
+  }
+
+  @media (min-width: 1300px) {
+    padding: 32px;
+    width: 60vw;
+
+  }
+
+
 `;
 
 const ChangeMonthArrow = styled.div`
@@ -34,12 +60,25 @@ const ChangeMonthArrow = styled.div`
 `;
 
 const DaysBox = styled.div`
-  padding: 32px;
+  padding: 8px;
   grid-column: 1/8;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
 
-  grid-gap: 16px;
+  grid-gap: 4px;
+
+
+  @media (min-width: 576px) {
+    padding: 32px;
+    grid-gap: 8px;
+  }
+
+  @media (min-width: 1300px) {
+
+    grid-gap: 16px;
+    padding: 32px;
+  }
+
 `;
 
 const DaysOfWeek = styled.div`
@@ -47,8 +86,14 @@ const DaysOfWeek = styled.div`
   text-transform: capitalize;
   border-radius: 8px;
   font-family: "Varela Round", sans-serif;
-  font-size: calc((12vw - 3.5rem) / 7);
+  font-size: calc((12vw - 1rem) / 7);
   font-weight: 550;
+
+  @media (min-width: 1300px) {
+    font-size: calc((12vw - 3.5rem) / 7);
+}
+
+  
 `;
 
 const MonthTitle = styled.div`
