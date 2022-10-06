@@ -201,7 +201,7 @@ export default function DayModal({
                     ))}
                   </TextField>
                 </HourPickerBox>
-                <TextField
+                {/* <TextField
                   id="outlined-select-currency"
                   select
                   label="Cidade"
@@ -216,7 +216,7 @@ export default function DayModal({
                       ></ColorDisplay>
                     </MenuItem>
                   ))}
-                </TextField>
+                </TextField> */}
                 <TextField
                   type="text"
                   fullWidth
