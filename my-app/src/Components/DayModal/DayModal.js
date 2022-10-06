@@ -147,7 +147,7 @@ export default function DayModal({
   };
   return (
     <div>
-      <Backdrop open={open}       sx={{ zIndex: (theme) => theme.zIndex.drawer + 2 }}>
+      <Backdrop open={open} sx={{ zIndex: (theme) => theme.zIndex.drawer + 2 }}>
         <BoardBox>
           {" "}
           <Board>

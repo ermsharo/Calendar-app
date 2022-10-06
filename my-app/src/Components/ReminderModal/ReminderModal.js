@@ -177,7 +177,10 @@ export default function ReminderModal({
   return (
     <>
       <div>
-        <Backdrop open={reminderModalIsOpen}       sx={{ zIndex: (theme) => theme.zIndex.drawer + 2 }}>
+        <Backdrop
+          open={reminderModalIsOpen}
+          sx={{ zIndex: (theme) => theme.zIndex.drawer + 2 }}
+        >
           <Board>
             <DayModalBox>
               {!editionModalIsOpen ? (

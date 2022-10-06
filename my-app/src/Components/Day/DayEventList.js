@@ -63,93 +63,95 @@ const AddButton = styled.div`
 `;
 
 const EventsOfDay = ({
-    events,
-    reminderModalIsOpen,
-    setReminderModalIsOpen,
-    refreshCalendar,
+  events,
+  reminderModalIsOpen,
+  setReminderModalIsOpen,
+  refreshCalendar,
 }) => {
-    const [reminderItem, setReminderItem] = useState(false);
-    const renderTitle = (title) => {
-        if (title === "") return "sem titulo";
-        return title;
-    };
-    if (events) {
-        return (
+  const [reminderItem, setReminderItem] = useState(false);
+  const renderTitle = (title) => {
+    if (title === "") return "sem titulo";
+    return title;
+  };
+  if (events) {
+    return (
+      <>
+        <ReminderBox>
+          {events.reminders.map((item) => (
             <>
-                <ReminderBox>
-                    {events.reminders.map((item) => (
-                        <>
-                            <Reminder
-                                onClick={() => {
-                                    setReminderModalIsOpen(true);
-                                    setReminderItem(item);
-                                }}
-                                style={{ backgroundColor: item.color }}
-                            >
-                                {renderTitle(item.title)}
-                            </Reminder>
-                            <ReminderModal
-                                reminderItem={item}
-                                reminderModalIsOpen={reminderModalIsOpen}
-                                setReminderModalIsOpen={setReminderModalIsOpen}
-                                refreshCalendar={refreshCalendar}
-                            />
-                        </>
-                    ))}
-                </ReminderBox>
+              <Reminder
+                onClick={() => {
+                  setReminderModalIsOpen(true);
+                  setReminderItem(item);
+                }}
+                style={{ backgroundColor: item.color }}
+              >
+                {renderTitle(item.title)}
+              </Reminder>
+              <ReminderModal
+                reminderItem={item}
+                reminderModalIsOpen={reminderModalIsOpen}
+                setReminderModalIsOpen={setReminderModalIsOpen}
+                refreshCalendar={refreshCalendar}
+              />
             </>
-        );
-    }
+          ))}
+        </ReminderBox>
+      </>
+    );
+  }
 };
 
 export default function DayEventList({
-    setRemindersListModalIsOpen,
-    remindersListModalIsOpen,
-    events,
-    reminderModalIsOpen,
-    setReminderModalIsOpen,
-    refreshCalendar,
-    date,
-    openDay,
-    day
+  setRemindersListModalIsOpen,
+  remindersListModalIsOpen,
+  events,
+  reminderModalIsOpen,
+  setReminderModalIsOpen,
+  refreshCalendar,
+  date,
+  openDay,
+  day,
 }) {
-    return (
-        <div>
-            <Backdrop
-                sx={{ zIndex: (theme) => theme.zIndex.drawer + 2 }}
-                open={remindersListModalIsOpen}
+  return (
+    <div>
+      <Backdrop
+        sx={{ zIndex: (theme) => theme.zIndex.drawer + 2 }}
+        open={remindersListModalIsOpen}
+      >
+        <ReminderDisplay>
+          <DayInfo>
+            <div>{date}</div>
+
+            <ActionButtons>
+              <ActionButton
+                onClick={() => {
+                  setRemindersListModalIsOpen(!remindersListModalIsOpen);
+                  console.log("reminder list", remindersListModalIsOpen);
+                }}
+              >
+                <AiFillCloseCircle />
+              </ActionButton>
+            </ActionButtons>
+          </DayInfo>
+          <EventsOfDay
+            events={events}
+            reminderModalIsOpen={reminderModalIsOpen}
+            setReminderModalIsOpen={setReminderModalIsOpen}
+            refreshCalendar={refreshCalendar}
+          />
+          <>
+            Adicionar lembrete{" "}
+            <AddButton
+              onClick={() => {
+                openDay(day);
+              }}
             >
-                <ReminderDisplay>
-                    <DayInfo>
-                        <div>{date}</div>
-
-                        <ActionButtons>
-                            <ActionButton
-                                onClick={() => {
-                                    setRemindersListModalIsOpen(!remindersListModalIsOpen);
-                                    console.log("reminder list", remindersListModalIsOpen);
-                                }}
-                            >
-                                <AiFillCloseCircle />
-                            </ActionButton>
-                        </ActionButtons>
-                    </DayInfo>
-                    <EventsOfDay
-                        events={events}
-                        reminderModalIsOpen={reminderModalIsOpen}
-                        setReminderModalIsOpen={setReminderModalIsOpen}
-                        refreshCalendar={refreshCalendar}
-                    />
-                    <>Adicionar lembrete       <AddButton
-                        onClick={() => {
-                            openDay(day);
-
-                        }}
-                    >
-                        <AiFillPlusCircle />
-                    </AddButton></>
-                </ReminderDisplay>
-            </Backdrop>
-        </div>
-    );
+              <AiFillPlusCircle />
+            </AddButton>
+          </>
+        </ReminderDisplay>
+      </Backdrop>
+    </div>
+  );
 }

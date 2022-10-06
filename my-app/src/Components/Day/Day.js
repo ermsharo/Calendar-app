@@ -35,7 +35,8 @@ const EmptyDay = styled.div`
 const DayHeader = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 8px;
+
+  height: 100%;
 `;
 
 const DayNumber = styled.div`
@@ -44,12 +45,21 @@ const DayNumber = styled.div`
   margin: auto;
 `;
 
+const AlignNumber = styled.div`
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: center;
+
+  height: 100%;
+`;
+
 const WeekendDayNumber = styled.div`
   font-size: calc((18vw) / 7);
   color: #ef4136;
   text-align: center;
   margin: auto;
-
 `;
 
 const AddButton = styled.div`
@@ -58,6 +68,20 @@ const AddButton = styled.div`
   justify-content: center;
   cursor: pointer;
   font-size: calc((12vw - 4.5rem) / 7);
+`;
+
+const BadgeNumber = styled.div`
+  font-size: 16px;
+  color: red;
+  background-color: red;
+  height: 30px;
+  width: 30px;
+  color: white;
+  text-align: center;
+  border-radius: 50%;
+  line-height: 30px;
+  font-family: "Varela Round", sans-serif;
+  font-weight: bolder;
 `;
 
 export default function Day({ item, openDay, refreshCalendar }) {
@@ -69,7 +93,14 @@ export default function Day({ item, openDay, refreshCalendar }) {
     return (
       <>
         {" "}
-        <Badge badgeContent={item.eventsOfDay.count} color="primary">
+        <Badge
+          badgeContent={
+            item.eventsOfDay.count && (
+              <BadgeNumber>{item.eventsOfDay.count}</BadgeNumber>
+            )
+          }
+          className="badge-style"
+        >
           <DayBox
             onClick={() => {
               setRemindersListModalIsOpen(true);
@@ -77,12 +108,15 @@ export default function Day({ item, openDay, refreshCalendar }) {
           >
             <DayHeader>
               {item.isWeekend ? (
-                <WeekendDayNumber>{item.day}</WeekendDayNumber>
+                <WeekendDayNumber>
+                  <AlignNumber> {item.day}</AlignNumber>
+                </WeekendDayNumber>
               ) : (
-                <DayNumber> {item.day}</DayNumber>
+                <DayNumber>
+                  {" "}
+                  <AlignNumber> {item.day}</AlignNumber>
+                </DayNumber>
               )}
-
-
             </DayHeader>
           </DayBox>
           <DayEventList
